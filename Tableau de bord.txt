@@ -16,6 +16,17 @@ On a supprimé les features qui nous paraissaient moins pertinentes.
 
 
 3)(Martin) 
-Création du fichier affichage.ipynb afin de mieux visualiser les données. → Suite : L'appeler avec le nouveau fichier .csv qui sera nettoyé et modifié (grâce à 1), 2), et l'essaye d onehot qu'on va faire)
+Création du fichier affichage.ipynb afin de mieux visualiser les données. → Suite : L'appeler avec le nouveau fichier .csv qui sera nettoyé et modifié (grâce à 1), 2), et l'essaye de onehot qu'on va faire)
 
 4) On a essayé de faire un tableau onehot mais on a pas assez de mémoire ram pour que ça fonctionne. Alors on a fait un encodage OrdinalEncoder.
+--> Détail : Faire un onehot des 3 colonnes primary description... nosu rajoute 700 features, et 700 millions de données c'est un peu beaucoup
+
+5) Création de la classe Kmeans.py 
+
+6) On a essayé d'utliser la classe Kmeans à notre dataset : ça donne une belle image de Chicago, cependant on a un cluster qui prédomine anormalement sur les autres, à approfondir.
+
+TODO à faire à la prochaine séance : 
+
+-Régler le problème des Kmeans
+-Créer une classe main.py pour avoir une base qui marche bien
+-Essayer d'utiliser le PCA et oir ce que ça donne
