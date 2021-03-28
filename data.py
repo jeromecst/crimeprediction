@@ -6,7 +6,7 @@ from sklearn.cluster import KMeans
 from datetime import datetime
 from sklearn.preprocessing import OrdinalEncoder
 
-data = pd.read_csv('Crimes1M.csv', low_memory=False)
+data = pd.read_csv('Crimes100K.csv', low_memory=False)
 del data['ID']
 del data['Case Number']
 del data['Block']
@@ -83,4 +83,4 @@ plt.savefig('affichage_Kmoyenne')
 print(predicts)
 data = np.c_[data, predicts]
 
-pd.DataFrame(data).to_csv("Crimes1M_featured.csv")
+pd.DataFrame(data).to_csv("Crimes100K_featured.csv")
