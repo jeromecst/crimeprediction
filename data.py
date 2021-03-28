@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import Kmeans
 from datetime import datetime
 
 data = pd.read_csv('Crimes1M.csv', low_memory=False)
@@ -11,8 +12,14 @@ del data['Updated On']
 del data['Longitude']
 del data['Latitude']
 del data['Location']
-del data['X Coordinate']
-del data['Y Coordinate']
+
+
+X_coordinate = data['X Coordinate']
+Y_coordinate = data['Y Coordinate']
+Coordinates = np.c_[X_coordinate[:10000], Y_coordinate[:10000]]
+#Coordinates = Coordinates.reshape(1000,2)
+
+print("Taille de coordonnee", Coordinates.shape)
 
 #print("type de chaque colonne : ", data.dtypes)
 
@@ -61,3 +68,16 @@ data = data[:, 1:]
 print(data.shape)
 print(data[0])
 pd.DataFrame(data).to_csv("Crimes1M_featuresdate.csv")
+
+
+"""def affiche_coordonnee(X,Y):
+    plt.figure(1)
+    plt.scatter(X,Y)
+    print("Création image affichage_coordonnee")
+    plt.savefig("affichage_coordonnee")
+
+
+"""
+Kmoyenne = Kmeans.Kmoyennes(20, 50)
+Kmoyenne.fit(Coordinates)
+Kmoyenne.affichage(Coordinates)
