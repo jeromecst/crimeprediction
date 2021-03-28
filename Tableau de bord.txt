@@ -15,6 +15,7 @@ On l'a ajouté au fichier csv.
 On a supprimé les features qui nous paraissaient moins pertinentes. 
 
 
-
 3)(Martin) 
-Création du fichier affichage.ipynb afin de mieux visualiser les données. -> Suite : L'appeler avec le nouveau fichier .csv qui sera nettoyé et modifié (grâce à 1), 2), et l'essaye d onehot qu'on va faire)
+Création du fichier affichage.ipynb afin de mieux visualiser les données. → Suite : L'appeler avec le nouveau fichier .csv qui sera nettoyé et modifié (grâce à 1), 2), et l'essaye d onehot qu'on va faire)
+
+4) On a essayé de faire un tableau onehot mais on a pas assez de mémoire ram pour que ça fonctionne. Alors on a fait un encodage OrdinalEncoder.
