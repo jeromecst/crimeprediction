@@ -1,11 +1,7 @@
 import pandas as pd
-pd.set_option('display.width', None)
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
 from datetime import datetime
-
-plt.style.use(['seaborn-bright','classic'])
 
 data = pd.read_csv('Crimes1M.csv', low_memory=False)
 del data['ID']
@@ -59,3 +55,9 @@ def split_date(X):
     return date1, date2, date3, date4
 
 date1, date2, date3, date4 = split_date(data)
+data = np.c_[data, date1]
+data = np.c_[data, date2]
+data = np.c_[data, date3]
+data = np.c_[data, date4]
+print(data.shape)
+print(data[0])
