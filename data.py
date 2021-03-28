@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import Kmeans
+from sklearn.cluster import KMeans
 from datetime import datetime
 from sklearn.preprocessing import OrdinalEncoder
 
@@ -17,14 +18,8 @@ del data['Location']
 
 X_coordinate = data['X Coordinate']
 Y_coordinate = data['Y Coordinate']
-Coordinates = np.c_[X_coordinate[:10000], Y_coordinate[:10000]]
-#Coordinates = Coordinates.reshape(1000,2)
-
+Coordinates = np.c_[X_coordinate, Y_coordinate]
 print("Taille de coordonnee", Coordinates.shape)
-
-#print("type de chaque colonne : ", data.dtypes)
-
-
 data = data.to_numpy() 
 
 def split_date(X):
@@ -69,17 +64,23 @@ print(data.shape)
 data = OrdinalEncoder().fit_transform(data)
 print(data.shape)
 print(data)
-pd.DataFrame(data).to_csv("Crimes1M_featuresdate.csv")
 
 
-"""def affiche_coordonnee(X,Y):
+def affiche_coordonnee(X,Y):
     plt.figure(1)
-    plt.scatter(X,Y)
+    plt.scatter(X,Y, s=1, marker='.')
     print("Création image affichage_coordonnee")
     plt.savefig("affichage_coordonnee")
 
+affiche_coordonnee(X_coordinate, Y_coordinate)
+km = KMeans(50)
+predicts = km.fit_predict(Coordinates)
 
-"""
-Kmoyenne = Kmeans.Kmoyennes(20, 50)
-Kmoyenne.fit(Coordinates)
-Kmoyenne.affichage(Coordinates)
+fig, ax = plt.subplots(1, 1)
+ax.scatter(X_coordinate, Y_coordinate, c=predicts, s=3, marker='.')
+plt.savefig('affichage_Kmoyenne')
+
+print(predicts)
+data = np.c_[data, predicts]
+
+pd.DataFrame(data).to_csv("Crimes1M_featured.csv")

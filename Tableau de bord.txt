@@ -25,8 +25,10 @@ Création du fichier affichage.ipynb afin de mieux visualiser les données. → 
 
 6) On a essayé d'utliser la classe Kmeans à notre dataset : ça donne une belle image de Chicago, cependant on a un cluster qui prédomine anormalement sur les autres, à approfondir.
 
+7) Essaie avec la classe Kmeans SKlearn: enorme gain de performance, 
+plus de problème de clusters qui disparaissent.
+
 TODO à faire à la prochaine séance : 
 
--Régler le problème des Kmeans
 -Créer une classe main.py pour avoir une base qui marche bien
 -Essayer d'utiliser le PCA et oir ce que ça donne
