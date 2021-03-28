@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from datetime import datetime
+from sklearn.preprocessing import OrdinalEncoder
 
 data = pd.read_csv('Crimes1M.csv', low_memory=False)
 del data['ID']
@@ -11,15 +12,8 @@ del data['Updated On']
 del data['Longitude']
 del data['Latitude']
 del data['Location']
-del data['X Coordinate']
-del data['Y Coordinate']
-
-#print("type de chaque colonne : ", data.dtypes)
 
 data = data.to_numpy() 
-#print("shape :",data.shape)
-#print("dates :", data[10:30,0])
-
 
 def split_date(X):
     '''On sépare la colonne date en 4 parties : 
@@ -59,5 +53,8 @@ date1, date2, date3, date4 = split_date(data)
 data = np.c_[data, date1, date2, date3, date4]
 data = data[:, 1:]
 print(data.shape)
-print(data[0])
+
+data = OrdinalEncoder().fit_transform(data)
+print(data.shape)
+print(data)
 pd.DataFrame(data).to_csv("Crimes1M_featuresdate.csv")
