@@ -55,9 +55,8 @@ def split_date(X):
     return date1, date2, date3, date4
 
 date1, date2, date3, date4 = split_date(data)
-data = np.c_[data, date1]
-data = np.c_[data, date2]
-data = np.c_[data, date3]
-data = np.c_[data, date4]
+data = np.c_[data, date1, date2, date3, date4]
+data = data[:, 1:]
 print(data.shape)
 print(data[0])
+pd.DataFrame(data).to_csv("Crimes1M_featuresdate.csv")
