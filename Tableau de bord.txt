@@ -1,0 +1,20 @@
+28 mars 2021:
+
+1)
+Création de la fonction split_date(X) qui permet de créer 4 nouvelles colonnes dates:
+-date1 : Matin/journée/soir/nuit (6h-10h; 10h-18h; 18h-22h; 22h-6h)
+-date2 : jours de la semaine 
+-date3 : week-end/semaine 
+-date4 : mois 
+Cela nous permettra de pouvoir les comparer afin d'en déduire quel critère est le plus pertinent.
+
+On l'a ajouté au fichier csv.
+
+
+2)
+On a supprimé les features qui nous paraissaient moins pertinentes. 
+
+
+
+3)(Martin) 
+Création du fichier affichage.ipynb afin de mieux visualiser les données. -> Suite : L'appeler avec le nouveau fichier .csv qui sera nettoyé et modifié (grâce à 1), 2), et l'essaye d onehot qu'on va faire)
