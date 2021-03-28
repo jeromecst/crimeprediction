@@ -6,6 +6,7 @@ from datetime import datetime
 data = pd.read_csv('Crimes1M.csv', low_memory=False)
 del data['ID']
 del data['Case Number']
+del data['Block']
 del data['Updated On']
 del data['Longitude']
 del data['Latitude']
