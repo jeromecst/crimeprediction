@@ -20,6 +20,7 @@ class preprocessing:
         self.km_predicts = 0
         self.km_clusters = 0
         self.km = 0
+        self.encodage = 0
         
         self.data = self.data.to_numpy()
     
@@ -117,7 +118,10 @@ class preprocessing:
         self.data = self.data[:, 1:]
 
     def encodage_features(self):
-        return OrdinalEncoder().fit_transform(self.data)
+        OE = OrdinalEncoder()
+        X = EO.fit_transform(self.data)
+        self.encosage = EO.categories_
+        return X
 
 
     def save_to_csv(self):
