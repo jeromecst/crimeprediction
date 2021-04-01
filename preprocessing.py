@@ -75,10 +75,7 @@ class preprocessing:
         
     def Kmeans_coordinate(self, K):
 
-        print("Taille de coordonnee", self.Coordinates.shape)
-        
-        #Appelle de la classe Kmeans
-
+        #Appel de la classe Kmeans
         self.km = KMeans(K)
         self.km_predicts = self.km.fit_predict(self.Coordinates)
         self.km_clusters = np.zeros(K, dtype=int)
@@ -89,7 +86,6 @@ class preprocessing:
     def affiche_coordonnee(self):
         plt.figure(1)
         plt.scatter(self.Coordinates[:,0],self.Coordinates[:,1], s=1, marker='.')
-        print("Taille coord[0] : ", self.Coordinates[0].size)
         print("Création image affichage_coordonnee")
         plt.savefig("affichage_coordonnee")
 
@@ -119,21 +115,9 @@ class preprocessing:
 
     def encodage_features(self):
         OE = OrdinalEncoder()
-        X = EO.fit_transform(self.data)
-        self.encosage = EO.categories_
+        X = OE.fit_transform(self.data)
+        self.encodage = OE.categories_
         return X
-
 
     def save_to_csv(self):
         pd.DataFrame(self.data).to_csv("Crimes100K_featured.csv")
-        
-        
-prepro = preprocessing("Crimes100K.csv")        
-prepro.ajout_dates()
-prepro.affiche_coordonnee()
-prepro.Kmeans_coordinate(50)
-prepro.affiche_Kmeans_coordinate()
-prepro.ajout_Kmeans_coordinate()
-
-
-
