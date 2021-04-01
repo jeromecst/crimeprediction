@@ -23,7 +23,7 @@ print("Taille de coordonnee", Coordinates.shape)
 data = data.to_numpy() 
 
 def split_date(X):
-    '''On sépare la colonne date en 4 parties : 
+    '''On sépare la colonne date en 5 parties : 
     -date1 : Matin/journée/soir/nuit (6h-10h; 10h-18h; 18h-22h; 22h-6h)
     -date2 : jours de la semaine 
     -date3 : week-end/semaine 
