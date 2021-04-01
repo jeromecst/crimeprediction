@@ -28,10 +28,12 @@ def split_date(X):
     -date2 : jours de la semaine 
     -date3 : week-end/semaine 
     -date4 : mois 
+    -date5 : heure
     '''
     date = X[:,0]
     size = X.shape[0]
-    date1, date2, date3, date4 = np.zeros(size, dtype=int), np.zeros(size, dtype=int), np.zeros(size, dtype=int), np.zeros(size, dtype=int)
+    date1, date2, date3, date4, date5 = np.zeros(size, dtype=int), np.zeros(size, dtype=int),\
+            np.zeros(size, dtype=int), np.zeros(size, dtype=int), np.zeros(size, dtype=int)
     for i, k in enumerate(date):
         heure = int(k[11:13]) + (k[-2:]=="PM")*12
         if(heure>=6 and heure<10):
@@ -53,11 +55,13 @@ def split_date(X):
         date3[i] = (date2[i]>4)# 0 semaine - 1 week-end
         
         date4[i] = int(mois)
-        
-    return date1, date2, date3, date4
 
-date1, date2, date3, date4 = split_date(data)
-data = np.c_[data, date1, date2, date3, date4]
+        date5[i] = heure
+
+    return date1, date2, date3, date4, date5    
+
+date1, date2, date3, date4, date5 = split_date(data)
+data = np.c_[data, date1, date2, date3, date4, date5]
 data = data[:, 1:]
 print(data.shape)
 
