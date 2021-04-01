@@ -31,4 +31,27 @@ plus de problème de clusters qui disparaissent.
 TODO à faire à la prochaine séance : 
 
 -Créer une classe main.py pour avoir une base qui marche bien
--Essayer d'utiliser le PCA et oir ce que ça donne
+-Essayer d'utiliser le PCA et voir ce que ça donne
+
+
+1er avril 2021:
+
+0)
+Au finale on a utilié la class kmeans de scikit_learn et ça marche, pas de bug
+
+1)
+Création de la classe preprocessing (nom à changer) à partir de data.py!
+En gros on a regroupé en fonctions le bouts de codes qui trainaient. Et ça compile! 
+Du coup maintenant on a des fonctions à appeler relativement facilement.
+
+2)
+Création de la classe train.py qui va nous permettre d'entraîner nos données
+
+3)
+Création de la classe main.py qui va nous permettre de tester tout notre programme, super!
+
+TODO à faire à la prochaine séance : 
+-Créer les X_train, Y_train etc.
+-Entrainer nos données
+-Essayer d'utiliser le PCA et voir ce que ça donne
+-Equilibrer le dataset afin d'avoir à peu près 50/50 d'arrestation.
