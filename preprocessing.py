@@ -25,6 +25,9 @@ class preprocessing:
         self.data = self.data.to_numpy()
     
     def delete_usless_features(self):
+        '''
+        Supprime les features inutiles
+        '''
         del self.data['ID']
         del self.data['Case Number']
         del self.data['Block']
@@ -41,6 +44,7 @@ class preprocessing:
         -date3 : week-end/semaine 
         -date4 : mois 
         -date5 : heure
+        @Return date1, date2, date3, date4, date5
         '''
         date = self.data_panda['Date']
         size = self.data.shape[0]
@@ -74,8 +78,10 @@ class preprocessing:
     
         
     def Kmeans_coordinate(self, K):
-
-        #Appel de la classe Kmeans
+        '''
+        On applique l'algorithme des kmeans de la classe scikit_learn aux coordonnées des crimes.
+        @Param : K -> int : Nombre de clusters
+        '''
         self.km = KMeans(K)
         self.km_predicts = self.km.fit_predict(self.Coordinates)
         self.km_clusters = np.zeros(K, dtype=int)
@@ -84,6 +90,9 @@ class preprocessing:
     
     
     def affiche_coordonnee(self):
+        '''
+        Crée un fichier affichage_coordonnée.png des coordonnées des crimes sur une carte 
+        '''
         plt.figure(1)
         plt.scatter(self.Coordinates[:,0],self.Coordinates[:,1], s=1, marker='.')
         print("Création image affichage_coordonnee")
@@ -92,6 +101,8 @@ class preprocessing:
         
         
     def affiche_Kmeans_coordinate(self):
+        '''
+        Crée un fichier affichage_Kmoyenne.png des coodonnées des crimes colorié selon les différents clusters'''
         max_crime = np.max(self.km_clusters)
         max_clus = np.argmax(self.km_clusters)
         point = self.km.cluster_centers_[np.argmax(self.km_clusters)]
@@ -106,9 +117,15 @@ class preprocessing:
 
     
     def ajout_Kmeans_coordinate(self):
+        '''
+        Ajoute une nouvelle features de prediction des crimes grace aux kmeans
+        '''
         self.data = np.c_[self.data, self.km_predicts]
     
     def ajout_dates(self):
+        '''
+        Ajoute 5 nouvelles features dates, correspondants aux nouvelles dates utilisables. On supprime l'ancienne colonne date qui n'est pas utilisable.
+        '''
         date1, date2, date3, date4, date5 = self.split_date()
         self.data = np.c_[self.data,date1, date2, date3, date4, date5]
         self.data = self.data[:, 1:]
