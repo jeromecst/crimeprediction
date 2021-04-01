@@ -76,15 +76,27 @@ def affiche_coordonnee(X,Y):
     print("Création image affichage_coordonnee")
     plt.savefig("affichage_coordonnee")
 
-affiche_coordonnee(X_coordinate, Y_coordinate)
-km = KMeans(50)
+#affiche_coordonnee(X_coordinate, Y_coordinate)
+K = 50
+km = KMeans(K)
 predicts = km.fit_predict(Coordinates)
+
+clusters = np.zeros(K, dtype=int)
+for i in predicts:
+    clusters[i] += 1
+max_crime = np.max(clusters)
+max_clus = np.argmax(clusters)
+point = km.cluster_centers_[np.argmax(clusters)]
+print("Le cluster où il y a le plus de crimes est le numéro", max_clus, "avec",
+        max_crime, "cimes, de coordonnée", point)
 
 fig, ax = plt.subplots(1, 1)
 ax.scatter(X_coordinate, Y_coordinate, c=predicts, s=3, marker='.')
+ax.scatter(point[0], point[1], c='yellow', s=100, marker='*', label="dont go there")
+ax.legend()
 plt.savefig('affichage_Kmoyenne')
 
-print(predicts)
+
 data = np.c_[data, predicts]
 
 pd.DataFrame(data).to_csv("Crimes100K_featured.csv")
