@@ -1,0 +1,6 @@
+## Récupérer les 100K premières données et enlever les données où il manque des informations
+grep -v -E '(,0,0,2)|(,,)' Crimes2001.csv | head -n 100000 > Crimes100K.csv
+
+## Récupérer les 100K dernières données et enlever les données où il manque des informations
+head -n 1 > Crimes100K.csv
+grep -v -E '(,0,0,2)|(,,)' Crimes2001.csv | tail -n  100000 >> Crimes100K.csv
