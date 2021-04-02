@@ -65,8 +65,8 @@ class preprocessing:
             mois = k[0:2]
             annee = k[6:10]
 
-
-            date2[i] = datetime.fromisoformat(f'{annee}-{mois}-{jour}').weekday() # 0 lundi - 6 dimanche
+            # 0 lundi - 6 dimanche
+            date2[i] = datetime.fromisoformat(f'{annee}-{mois}-{jour}').weekday() 
 
             date3[i] = (date2[i]>4)# 0 semaine - 1 week-end
 
@@ -102,17 +102,19 @@ class preprocessing:
         
     def affiche_Kmeans_coordinate(self):
         '''
-        Crée un fichier affichage_Kmoyenne.png des coodonnées des crimes colorié selon les différents clusters'''
-        max_crime = np.max(self.km_clusters)
-        max_clus = np.argmax(self.km_clusters)
-        point = self.km.cluster_centers_[np.argmax(self.km_clusters)]
-        print("Le cluster où il y a le plus de crimes est le numéro", max_clus, "avec",
-                max_crime, "cimes, de coordonnée", point)
+        Crée un fichier affichage_Kmoyenne.png des coodonnées des crimes colorié 
+        selon les différents clusters
+        '''
+        ids = np.argsort(self.km_clusters)
+        crimes_sorted = self.km_clusters[ids]
+        point = self.km.cluster_centers_[ids]
 
         fig, ax = plt.subplots(1, 1)
         ax.scatter(self.Coordinates[:,0], self.Coordinates[:,1], c=self.km_predicts, s=3, marker='.')
-        ax.scatter(point[0], point[1], c='yellow', s=100, marker='*', label="dont go there")
-        ax.legend()
+        for i in range(1, 6):
+            plt.scatter(point[-i,0], point[-i,1], label=i+1, s = 400, c='red', marker='*')
+            plt.text(point[-i,0], point[-i,1], i, c='black', ha="center", va="center", size=10)
+        print("sauvegarde du fichier affichage_Kmoyenne")
         plt.savefig('affichage_Kmoyenne')
 
     
@@ -124,7 +126,8 @@ class preprocessing:
     
     def ajout_dates(self):
         '''
-        Ajoute 5 nouvelles features dates, correspondants aux nouvelles dates utilisables. On supprime l'ancienne colonne date qui n'est pas utilisable.
+        Ajoute 5 nouvelles features dates, correspondants aux nouvelles dates utilisables. 
+        On supprime l'ancienne colonne date qui n'est pas utilisable.
         '''
         date1, date2, date3, date4, date5 = self.split_date()
         self.data = np.c_[self.data,date1, date2, date3, date4, date5]
@@ -135,6 +138,9 @@ class preprocessing:
         X = OE.fit_transform(self.data)
         self.encodage = OE.categories_
         return X
+
+    def XYsplit(self):
+        print(self.data)
 
     def save_to_csv(self):
         pd.DataFrame(self.data).to_csv("Crimes100K_featured.csv")
