@@ -21,6 +21,9 @@ class preprocessing:
         self.km_clusters = 0
         self.km = 0
         self.encodage = 0
+
+        headers = self.data.columns
+        self.features_description = headers.to_numpy(copy=True)
         
         self.data = self.data.to_numpy()
     
@@ -66,7 +69,7 @@ class preprocessing:
             annee = k[6:10]
 
             # 0 lundi - 6 dimanche
-            date2[i] = datetime.fromisoformat(f'{annee}-{mois}-{jour}').weekday() 
+            date2[i] = datetime.fromisoformat(f'{annee}-{mois}-{jour}').weekday()
 
             date3[i] = (date2[i]>4)# 0 semaine - 1 week-end
 
@@ -79,7 +82,8 @@ class preprocessing:
         
     def Kmeans_coordinate(self, K):
         '''
-        On applique l'algorithme des kmeans de la classe scikit_learn aux coordonnées des crimes.
+        On applique l'algorithme des kmeans de la classe 
+        scikit_learn aux coordonnées des crimes.
         @Param : K -> int : Nombre de clusters
         '''
         self.km = KMeans(K)
@@ -91,7 +95,8 @@ class preprocessing:
     
     def affiche_coordonnee(self):
         '''
-        Crée un fichier affichage_coordonnée.png des coordonnées des crimes sur une carte 
+        Crée un fichier affichage_coordonnée.png des coordonnée
+        s des crimes sur une carte 
         '''
         plt.figure(1)
         plt.scatter(self.Coordinates[:,0],self.Coordinates[:,1], s=1, marker='.')
@@ -102,7 +107,8 @@ class preprocessing:
         
     def affiche_Kmeans_coordinate(self):
         '''
-        Crée un fichier affichage_Kmoyenne.png des coodonnées des crimes colorié 
+        Crée un fichier affichage_Kmoyenne.png des coodonnées 
+        des crimes colorié 
         selon les différents clusters
         '''
         ids = np.argsort(self.km_clusters)
@@ -114,6 +120,8 @@ class preprocessing:
         for i in range(1, 6):
             plt.scatter(point[-i,0], point[-i,1], label=i+1, s = 400, c='red', marker='*')
             plt.text(point[-i,0], point[-i,1], i, c='black', ha="center", va="center", size=10)
+        plt.axis('off')
+        ax.set_title("Carte des crimes à Chicago")
         print("sauvegarde du fichier affichage_Kmoyenne")
         plt.savefig('affichage_Kmoyenne')
 
@@ -123,6 +131,7 @@ class preprocessing:
         Ajoute une nouvelle features de prediction des crimes grace aux kmeans
         '''
         self.data = np.c_[self.data, self.km_predicts]
+        self.features_description = np.append(self.features_description, "Cluster")
     
     def ajout_dates(self):
         '''
@@ -132,6 +141,8 @@ class preprocessing:
         date1, date2, date3, date4, date5 = self.split_date()
         self.data = np.c_[self.data,date1, date2, date3, date4, date5]
         self.data = self.data[:, 1:]
+        self.features_description = self.features_description[1:]
+        self.features_description = np.append(self.features_description, ['Part of the day', 'Weekday', 'Weekend', 'Month', 'Hour'])
 
     def encodage_features(self):
         OE = OrdinalEncoder()
@@ -139,8 +150,11 @@ class preprocessing:
         self.encodage = OE.categories_
         return X
 
-    def XYsplit(self):
-        print(self.data)
+    def XYsplit(self, data):
+        id_arrest = self.features_description == 'Arrest'
+        X = data[:, id_arrest!=True]
+        Y = data[:, id_arrest]
+        return X, Y
 
     def save_to_csv(self):
         pd.DataFrame(self.data).to_csv("Crimes100K_featured.csv")
