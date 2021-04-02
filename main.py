@@ -2,11 +2,15 @@ import numpy as np
 import preprocessing
 import train
 
+def affichage_encodage():
+    for i in range(len(prepro.features_description)):
+        for j in range(2):
+            print("encodage du",prepro.features_description[i],j,prepro.encodage[i][j])
+
 prepro = preprocessing.preprocessing("Crimes100K.csv")
 prepro.ajout_dates()
-prepro.Kmeans_coordinate(10)
+prepro.Kmeans_coordinate(50)
 prepro.ajout_Kmeans_coordinate()
-#prepro.affiche_Kmeans_coordinate()
-data = prepro.encodage_features()
-print("encodage du lieu 0 :",prepro.encodage[3][0])
-print("encodage du lieu 4 :",prepro.encodage[3][4])
+prepro.affiche_Kmeans_coordinate()
+data_encodée = prepro.encodage_features()
+X, Y = prepro.XYsplit(data_encodée)
