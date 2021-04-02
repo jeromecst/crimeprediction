@@ -115,11 +115,18 @@ class preprocessing:
         crimes_sorted = self.km_clusters[ids]
         point = self.km.cluster_centers_[ids]
 
-        fig, ax = plt.subplots(1, 1)
-        ax.scatter(self.Coordinates[:,0], self.Coordinates[:,1], c=self.km_predicts, s=3, marker='.')
-        for i in range(1, 6):
-            plt.scatter(point[-i,0], point[-i,1], label=i+1, s = 400, c='red', marker='*')
-            plt.text(point[-i,0], point[-i,1], i, c='black', ha="center", va="center", size=10)
+        predicts_colors = []
+        maax = crimes_sorted[-1]
+        for i in range(self.data.shape[0]):
+            c = self.km_clusters[self.km_predicts[i]]/maax
+            predicts_colors += [(c, c, 0)]
+
+
+        fig, ax = plt.subplots(1, 1, figsize=(20, 20))
+        ax.scatter(self.Coordinates[:,0], self.Coordinates[:,1], c=predicts_colors, s=.5, marker='.')
+        #for i in range(1, 6):
+        #    plt.scatter(point[-i,0], point[-i,1], label=i+1, s = 400, c='red', marker='*')
+        #    plt.text(point[-i,0], point[-i,1], i, c='black', ha="center", va="center", size=10)
         plt.axis('off')
         ax.set_title("Carte des crimes à Chicago")
         print("sauvegarde du fichier affichage_Kmoyenne")
