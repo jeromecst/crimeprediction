@@ -50,6 +50,23 @@ Création de la classe train.py qui va nous permettre d'entraîner nos données
 3)
 Création de la classe main.py qui va nous permettre de tester tout notre programme, super!
 
+2 avril 2021:
+
+1) Ajouts de l'affichage de l'encodage dans le main
+
+2) Ajout d'un fichier commandes qui contient l'ensemble des commandes shell qui 
+permettent de manipuler le data set.
+
+3) Dans le preprocessing.py, ajout du split data → X/Y
+
+4) Gestion du header donc on pourra facilement retrouver quelle colonne correspond 
+à quelle feature.
+
+5) Ajout du README
+
+6) Affichage beaucoup plus évolué où les clusters les plus important ont une couleur plus
+vive.
+
 TODO à faire à la prochaine séance : 
 -Créer les X_train, Y_train etc.
 -Entrainer nos données
