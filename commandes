@@ -4,3 +4,16 @@ grep -v -E '(,0,0,2)|(,,)' Crimes2001.csv | head -n 100000 > Crimes100K.csv
 ## Récupérer les 100K dernières données et enlever les données où il manque des informations
 head -n 1 > Crimes100K.csv
 grep -v -E '(,0,0,2)|(,,)' Crimes2001.csv | tail -n  100000 >> Crimes100K.csv
+
+## Nettoyer les données
+grep -v -E '(,0,0,2)|(,,)' Crimes2001.csv  > CrimesClean.csv
+
+## Equilibrer les données
+# Ici on sépares à l'aide d'expressions régulières les arrested et les non arrested
+grep -E '^(([^,]*,)|("[^"]*",)){8}false' Crimes100K.csv > CrimesCleanNonArrested.csv
+grep -E '^(([^,]*,)|("[^"]*",)){8}true' Crimes100K.csv > CrimesCleanArrested.csv
+
+# Ici on recombine en n'oubliant pas le header contenant le nom des features
+head -n 1 CrimesClean.csv > Crimes1MEq.csv
+head -n 500000 CrimesCleanNonArrested.csv >> Crimes1MEq.csv
+head -n 500000 CrimesCleanArrested.csv >> Crimes1MEq.csv
