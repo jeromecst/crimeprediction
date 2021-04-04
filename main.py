@@ -7,7 +7,7 @@ import os.path
 import matplotlib.pyplot as plt
 from os import path
 
-file = "Crimes100KEq" # ne pas écrire .csv
+file = "Crimes1MEq" # ne pas écrire .csv
 
 def bestParamDecisionTree(train, X, Y):
     """
@@ -54,7 +54,7 @@ def affichage_encodage():
         for j in range(2):
             print("encodage du",prepro.features_description[i],j,prepro.encodage[i][j])
 
-def comparaison_features():
+def comparaison_features(train, X, Y):
     compar_date_lieu_Gauss = np.zeros((5,4))
     compar_date_lieu_Tree = np.zeros((5,4))
 
@@ -67,12 +67,12 @@ def comparaison_features():
             prepro.extract_date(X_temp, date_i)
             prepro.extract_lieu(X_temp, lieu_i)
             #print(f"----------------------Début du training, avec date_i = {date_i} et lieu_i = {lieu_i}-----------------------\n")      
-            tr = train.train(X_temp,Y_temp)
-            tr.traintestsplit(0.3)
+            train.load_data(X_temp,Y_temp)
+            train.traintestsplit(0.3)
             #print("\n----------Début du training_GaussienNB------------\n")      
-            compar_date_lieu_Gauss[i][j]=tr.fit_GaussNB()
+            compar_date_lieu_Gauss[i][j]=train.fit_GaussNB()
             #print("\n----------Début du training_DecisionTree----------\n")
-            compar_date_lieu_Tree[i][j]=tr.fit_DecisionTree()
+            compar_date_lieu_Tree[i][j]=train.fit_DecisionTree()
         
     panda_Gauss = pd.DataFrame(compar_date_lieu_Gauss, columns=lieux, index=dates)
     print(panda_Gauss)
@@ -103,7 +103,8 @@ X, Y = prepro.XYsplit(data_encodée)
 train = train.train(X,Y)
 train.traintestsplit(0.3)
 
-bestParamDecisionTree(train, X, Y)
+#bestParamDecisionTree(train, X, Y)
+comparaison_features(train, X, Y)
 
 train.traintestsplit(0.3)
 display = True
@@ -111,3 +112,5 @@ print("\n----------Début du training_GaussienNB------------\n")
 train.fit_GaussNB(display)
 print("\n----------Début du training_DecisionTree----------\n")
 train.fit_DecisionTree(display)
+#print("\n----------Début du training_RandomForestClassifier----------\n")
+#train.fit_RandomForestClassifier(display)
