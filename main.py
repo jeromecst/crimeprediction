@@ -32,11 +32,18 @@ prepro = preprocessing.preprocessing(file)
 time_after = time.time()
 data_encodée = prepro.encodage_features()
 print("Temps pour le preprocessing : ", (time_after-time_before), " secondes\n")
-X, Y = prepro.XYsplit(data_encodée)
-print("----------------------Début du training-----------------------\n")      
-train = train.train(X,Y)
-train.traintestsplit(0.3)
-print("\n----------Début du training_GaussienNB------------\n")      
-train.fit_GaussNB()
-print("\n----------Début du training_DecisionTree----------\n")
-train.fit_DecisionTree()
+
+
+for date_i in ['Part of the day', 'Weekday', 'Weekend', 'Month', 'Hour']:
+    for lieu_i in ['Ward', 'Community Area', 'District', 'Cluster']
+        X, Y = prepro.XYsplit(data_encodée)
+        prepro.extract_date(X, date_i)
+        prepro.extract_lieu(X, lieu_i)
+        print("----------------------Début du training-----------------------\n")      
+        train = train.train(X,Y)
+        train.traintestsplit(0.3)
+        print("\n----------Début du training_GaussienNB------------\n")      
+        train.fit_GaussNB()
+        print("\n----------Début du training_DecisionTree----------\n")
+        train.fit_DecisionTree()
+
