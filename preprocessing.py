@@ -11,6 +11,7 @@ class preprocessing:
         self.data = pd.read_csv(fichierCSV, low_memory=False)
         self.delete_usless_features()
         self.data_panda = self.data.copy()
+        self.data_to_extract = 0
 
         X_coordinate = self.data['X Coordinate']
         Y_coordinate = self.data['Y Coordinate']
@@ -78,6 +79,21 @@ class preprocessing:
 
         return date1, date2, date3, date4, date5 
     
+    def extract_date(self, date_i):
+        dates = ['Part of the day', 'Weekday', 'Weekend', 'Month', 'Hour']
+        self.data_to_extract = self.data.copy()
+        for d in dates:
+            if(date_i !=d):
+                id_d = self.features_description == d
+                np.delete(self.data_to_extract, id_d)
+    
+    def extract_lieu(self, lieu_i):
+        lieux = ['Ward', 'Community Area', 'District', 'Cluster']
+        for l in lieux:
+            if(l != lieux_i):
+                id_l = self.features_description == l
+                np.delete(self.data_to_extract, id_l)
+        return data_temp
         
     def Kmeans_coordinate(self, K):
         '''
