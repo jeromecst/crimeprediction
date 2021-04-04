@@ -97,10 +97,9 @@ class preprocessing:
     def extract_lieu(self, X, lieu_i):
         lieux = ['Ward', 'Community Area', 'District', 'Cluster']
         for l in lieux:
-            if(l != lieux_i):
+            if(l != lieu_i):
                 id_l = self.features_description == l
                 np.delete(X, id_l)
-        return data_temp
         
     def Kmeans_coordinate(self, K):
         '''
