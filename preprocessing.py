@@ -8,20 +8,18 @@ from sklearn.preprocessing import OrdinalEncoder
 class preprocessing:
     
 
-        ## instanciation d'un objet du type de la classe.
+    ## instanciation d'un objet du type de la classe.
     def __init__(self, fichierCSV, already_preprocessed=False): 
         self.km_predicts = 0
         self.km_clusters = 0
         self.km = 0
         self.encodage = 0
         self.data_to_extract = 0
+        print(already_preprocessed)
         if(already_preprocessed):
             self.data = pd.read_csv(f"{fichierCSV}_prepro.csv", low_memory=False)
             headers = self.data.columns
             self.data_panda = self.data.copy()
-            X_coordinate = self.data['X Coordinate']
-            Y_coordinate = self.data['Y Coordinate']
-            self.Coordinates = np.c_[X_coordinate, Y_coordinate]
             self.features_description = headers.to_numpy(copy=True)
             
             self.data = self.data.to_numpy()
@@ -166,6 +164,10 @@ class preprocessing:
         '''
         self.data = np.c_[self.data, self.km_predicts]
         self.features_description = np.append(self.features_description, "Cluster")
+        for str in ["X Coordinate", "Y Coordinate"]:
+            todelete = np.where(self.features_description == str)
+            self.data = np.delete(self.data, todelete, 1)
+            self.features_description = np.delete(self.features_description, todelete)
     
     def ajout_dates(self):
         '''
@@ -174,8 +176,9 @@ class preprocessing:
         '''
         date1, date2, date3, date4, date5 = self.split_date()
         self.data = np.c_[self.data,date1, date2, date3, date4, date5]
-        self.data = self.data[:, 1:]
-        self.features_description = self.features_description[1:]
+        todelete = np.where(self.features_description == "Date")
+        self.data = np.delete(self.data, todelete, 1)
+        self.features_description = np.delete(self.features_description, todelete)
         self.features_description = np.append(self.features_description, ['Part of the day', 'Weekday', 'Weekend', 'Month', 'Hour'])
 
     def encodage_features(self):
@@ -194,4 +197,5 @@ class preprocessing:
         return X, Y.flatten()
 
     def save_to_csv(self, title):
+        print(f"Saving file to {title}_prepro.csv...")
         pd.DataFrame(self.data_encodée).to_csv(f"{title}_prepro.csv", header = self.features_description, index=False)
