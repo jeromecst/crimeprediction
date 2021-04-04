@@ -7,25 +7,37 @@ from sklearn.preprocessing import OrdinalEncoder
 
 class preprocessing:
     
-    def __init__(self, fichierCSV): ## instanciation d'un objet du type de la classe.
-        self.data = pd.read_csv(fichierCSV, low_memory=False)
-        self.delete_usless_features()
-        self.data_panda = self.data.copy()
-        self.data_to_extract = 0
 
-        X_coordinate = self.data['X Coordinate']
-        Y_coordinate = self.data['Y Coordinate']
-        self.Coordinates = np.c_[X_coordinate, Y_coordinate]
-        
+        ## instanciation d'un objet du type de la classe.
+    def __init__(self, fichierCSV, already_preprocessed=False): 
         self.km_predicts = 0
         self.km_clusters = 0
         self.km = 0
         self.encodage = 0
+        self.data_to_extract = 0
+        if(already_preprocessed):
+            self.data = pd.read_csv(f"{fichierCSV}_prepro.csv", low_memory=False)
+            headers = self.data.columns
+            self.data_panda = self.data.copy()
+            X_coordinate = self.data['X Coordinate']
+            Y_coordinate = self.data['Y Coordinate']
+            self.Coordinates = np.c_[X_coordinate, Y_coordinate]
+            self.features_description = headers.to_numpy(copy=True)
+            
+            self.data = self.data.to_numpy()
+        else:
+            self.data = pd.read_csv(f"{fichierCSV}.csv", low_memory=False)
+            self.delete_usless_features()
+            self.data_panda = self.data.copy()
 
-        headers = self.data.columns
-        self.features_description = headers.to_numpy(copy=True)
-        
-        self.data = self.data.to_numpy()
+            X_coordinate = self.data['X Coordinate']
+            Y_coordinate = self.data['Y Coordinate']
+            self.Coordinates = np.c_[X_coordinate, Y_coordinate]
+            
+            headers = self.data.columns
+            self.features_description = headers.to_numpy(copy=True)
+            
+            self.data = self.data.to_numpy()
     
     def delete_usless_features(self):
         '''
@@ -169,14 +181,17 @@ class preprocessing:
     def encodage_features(self):
         OE = OrdinalEncoder()
         X = OE.fit_transform(self.data)
+        X = X.astype('int')
         self.encodage = OE.categories_
+        self.data_encodée = X
         return X
 
     def XYsplit(self, data):
         id_arrest = self.features_description == 'Arrest'
         X = data[:, id_arrest!=True]
         Y = data[:, id_arrest]
+        self.features_description = self.features_description[id_arrest != True]
         return X, Y.flatten()
 
-    def save_to_csv(self):
-        pd.DataFrame(self.data).to_csv("Crimes100K_featured.csv")
+    def save_to_csv(self, title):
+        pd.DataFrame(self.data_encodée).to_csv(f"{title}_prepro.csv", header = self.features_description, index=False)
