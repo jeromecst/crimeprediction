@@ -43,4 +43,3 @@ class train:
         y_pred = clf.predict(self.X_test)
         #print("Ratio de bien placé pour le Decision tree = ", ((self.Y_test == y_pred).sum() / self.X_test.shape[0]))
         return ((self.Y_test == y_pred).sum() / self.X_test.shape[0])
-        

@@ -92,14 +92,14 @@ class preprocessing:
         for d in dates:
             if(date_i !=d):
                 id_d = self.features_description == d
-                np.delete(X, id_d)
+                np.delete(X, id_d, 1)
     
     def extract_lieu(self, X, lieu_i):
         lieux = ['Ward', 'Community Area', 'District', 'Cluster']
         for l in lieux:
             if(l != lieu_i):
                 id_l = self.features_description == l
-                np.delete(X, id_l)
+                np.delete(X, id_l, 1)
         
     def Kmeans_coordinate(self, K):
         '''
