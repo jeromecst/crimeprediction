@@ -1,4 +1,4 @@
-28 mars 2021:
+=== 28 MARS 2021 ===
 
 1)
 Création de la fonction split_date(X) qui permet de créer 4 nouvelles colonnes dates:
@@ -34,7 +34,7 @@ TODO à faire à la prochaine séance :
 -Essayer d'utiliser le PCA et voir ce que ça donne
 
 
-1er avril 2021:
+=== 1ER AVRIL 2021 ===
 
 0)
 Au finale on a utilié la class kmeans de scikit_learn et ça marche, pas de bug
@@ -50,7 +50,7 @@ Création de la classe train.py qui va nous permettre d'entraîner nos données
 3)
 Création de la classe main.py qui va nous permettre de tester tout notre programme, super!
 
-2 avril 2021:
+=== 2 AVRIL 2021 ===
 
 1) Ajouts de l'affichage de l'encodage dans le main
 
@@ -67,8 +67,13 @@ permettent de manipuler le data set.
 6) Affichage beaucoup plus évolué où les clusters les plus important ont une couleur plus
 vive.
 
+=== 4 AVRIL 2021 ===
+
+1) Gain de temps en sauvegardant les données préprocessés
+
+2) Training en GaussianNB et DecisionTreeClassifier
+
+3) Equilibrage du dataset (voir le fichier commandes)
+
 TODO à faire à la prochaine séance : 
--Créer les X_train, Y_train etc.
--Entrainer nos données
 -Essayer d'utiliser le PCA et voir ce que ça donne
--Equilibrer le dataset afin d'avoir à peu près 50/50 d'arrestation.
