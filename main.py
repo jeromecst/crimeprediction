@@ -39,11 +39,20 @@ for date_i in ['Part of the day', 'Weekday', 'Weekend', 'Month', 'Hour']:
         X, Y = prepro.XYsplit(data_encodée)
         prepro.extract_date(X, date_i)
         prepro.extract_lieu(X, lieu_i)
-        print("----------------------Début du training-----------------------\n")      
+        print(f"----------------------Début du training, avec date_i = {date_i} et lieu_i = {lieu_i}-----------------------\n")      
         train = train.train(X,Y)
         train.traintestsplit(0.3)
         print("\n----------Début du training_GaussienNB------------\n")      
         train.fit_GaussNB()
         print("\n----------Début du training_DecisionTree----------\n")
         train.fit_DecisionTree()
-
+'''
+X, Y = prepro.XYsplit(data_encodée)
+print(f"----------------------Début du training, avec date_i = {date_i} et lieu_i = {lieu_i}-----------------------\n")      
+train = train.train(X,Y)
+train.traintestsplit(0.3)
+print("\n----------Début du training_GaussienNB------------\n")      
+train.fit_GaussNB()
+print("\n----------Début du training_DecisionTree----------\n")
+train.fit_DecisionTree()
+'''
