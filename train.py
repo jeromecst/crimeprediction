@@ -32,7 +32,8 @@ class train:
         gnb = GaussianNB()
         gnb.fit(self.X_train, self.Y_train)
         y_pred = gnb.predict(self.X_test)
-        print("Ratio de bien placé pour le Bayessien naif = ", ((self.Y_test == y_pred).sum() / self.X_test.shape[0]))
+        #print("Ratio de bien placé pour le Bayessien naif = ", ((self.Y_test == y_pred).sum() / self.X_test.shape[0]))
+        return ((self.Y_test == y_pred).sum() / self.X_test.shape[0])
 
         
         
@@ -40,5 +41,6 @@ class train:
         clf = tree.DecisionTreeClassifier()
         clf = clf.fit(self.X_train, self.Y_train)
         y_pred = clf.predict(self.X_test)
-        print("Ratio de bien placé pour le Decision tree = ", ((self.Y_test == y_pred).sum() / self.X_test.shape[0]))
+        #print("Ratio de bien placé pour le Decision tree = ", ((self.Y_test == y_pred).sum() / self.X_test.shape[0]))
+        return ((self.Y_test == y_pred).sum() / self.X_test.shape[0])
         
