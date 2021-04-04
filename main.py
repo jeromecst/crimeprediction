@@ -28,7 +28,6 @@ else:
     data_encodée = prepro.encodage_features()
     prepro.save_to_csv(file)
 
-prepro = preprocessing.preprocessing(file)
 time_after = time.time()
 data_encodée = prepro.encodage_features()
 print("Temps pour le preprocessing : ", (time_after-time_before), " secondes\n")
