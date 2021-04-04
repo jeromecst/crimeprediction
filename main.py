@@ -1,6 +1,7 @@
 import numpy as np
 import preprocessing
 import train
+import time
 import os.path
 from os import path
 
@@ -12,6 +13,8 @@ def affichage_encodage():
             print("encodage du",prepro.features_description[i],j,prepro.encodage[i][j])
 
 ignorePreprocessedFile = False
+print("\n----------------------Début du preprocessing-----------------------\n") 
+time_before = time.time()
 if path.isfile(f"{file}_prepro.csv") and not ignorePreprocessedFile:
     print("file found!")
     prepro = preprocessing.preprocessing(file, already_preprocessed=True)
@@ -25,5 +28,15 @@ else:
     data_encodée = prepro.encodage_features()
     prepro.save_to_csv(file)
 
+prepro = preprocessing.preprocessing(file)
+time_after = time.time()
+data_encodée = prepro.encodage_features()
+print("Temps pour le preprocessing : ", (time_after-time_before), " secondes\n")
 X, Y = prepro.XYsplit(data_encodée)
-print(X.shape, Y.shape)
+print("----------------------Début du training-----------------------\n")      
+train = train.train(X,Y)
+train.traintestsplit(0.3)
+print("\n----------Début du training_GaussienNB------------\n")      
+train.fit_GaussNB()
+print("\n----------Début du training_DecisionTree----------\n")
+train.fit_DecisionTree()
