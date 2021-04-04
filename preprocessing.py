@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import Kmeans
 from sklearn.cluster import KMeans
 from datetime import datetime
 from sklearn.preprocessing import OrdinalEncoder
@@ -161,7 +160,7 @@ class preprocessing:
         id_arrest = self.features_description == 'Arrest'
         X = data[:, id_arrest!=True]
         Y = data[:, id_arrest]
-        return X, Y
+        return X, Y.flatten()
 
     def save_to_csv(self):
         pd.DataFrame(self.data).to_csv("Crimes100K_featured.csv")
