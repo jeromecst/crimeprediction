@@ -17,3 +17,8 @@ grep -E '^(([^,]*,)|("[^"]*",)){8}true' Crimes100K.csv > CrimesCleanArrested.csv
 head -n 1 CrimesClean.csv > Crimes1MEq.csv
 head -n 500000 CrimesCleanNonArrested.csv >> Crimes1MEq.csv
 head -n 500000 CrimesCleanArrested.csv >> Crimes1MEq.csv
+
+# Idem pour 100K features
+head -n 1 CrimesClean.csv > Crimes100KEq.csv
+head -n 50000 CrimesCleanNonArrested.csv >> Crimes100KEq.csv
+head -n 50000 CrimesCleanArrested.csv >> Crimes100KEq.csv

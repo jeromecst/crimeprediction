@@ -25,21 +25,20 @@ class train:
         self.X_train, self.X_test, self.Y_train, self.Y_test = \
                 sklearn.model_selection.train_test_split(self.X, self.Y, test_size=test_ratio)
 
-    def fit_GaussNB(self):
+    def fit_GaussNB(self, display=False):
         '''
         Entraînement de notre modèle
         '''
         gnb = GaussianNB()
         gnb.fit(self.X_train, self.Y_train)
-        y_pred = gnb.predict(self.X_test)
-        #print("Ratio de bien placé pour le Bayessien naif = ", ((self.Y_test == y_pred).sum() / self.X_test.shape[0]))
-        return ((self.Y_test == y_pred).sum() / self.X_test.shape[0])
+        if(display):
+            print("Score GaussNB : ", gnb.score(self.X_test, self.Y_test))
+        return gnb.score(self.X_test, self.Y_test)
 
         
-        
-    def fit_DecisionTree(self):
-        clf = tree.DecisionTreeClassifier()
+    def fit_DecisionTree(self, display=False, min_samples_split = 130, min_samples_leaf = 60, max_features = 17, min_impurity_decrease = 0.0):
+        clf = tree.DecisionTreeClassifier(min_samples_split = min_samples_split, min_samples_leaf = min_samples_leaf, max_features = max_features, min_impurity_decrease = min_impurity_decrease)
         clf = clf.fit(self.X_train, self.Y_train)
-        y_pred = clf.predict(self.X_test)
-        #print("Ratio de bien placé pour le Decision tree = ", ((self.Y_test == y_pred).sum() / self.X_test.shape[0]))
-        return ((self.Y_test == y_pred).sum() / self.X_test.shape[0])
+        if(display):
+            print("Score DecisionTree : ", clf.score(self.X_test, self.Y_test))
+        return clf.score(self.X_test, self.Y_test)
