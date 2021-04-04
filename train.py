@@ -3,6 +3,7 @@ import sklearn
 
 from sklearn.naive_bayes import GaussianNB
 from sklearn import tree
+from sklearn.ensemble import RandomForestClassifier
 
 class train:
     def __init__(self, X, Y):
@@ -42,3 +43,10 @@ class train:
         if(display):
             print("Score DecisionTree : ", clf.score(self.X_test, self.Y_test))
         return clf.score(self.X_test, self.Y_test)
+
+    def fit_RandomForestClassifier(self, display=False, min_samples_split = 130, min_samples_leaf = 60, max_features = 17, min_impurity_decrease = 0.0):
+        rfc = RandomForestClassifier(n_jobs = 4, n_estimators = 1000, min_samples_split = min_samples_split, min_samples_leaf = min_samples_leaf, max_features = max_features, min_impurity_decrease = min_impurity_decrease)
+        rfc  = rfc.fit(self.X_train, self.Y_train)
+        if(display):
+            print("Score RandomForestClassifier : ", rfc.score(self.X_test, self.Y_test))
+        return rfc.score(self.X_test, self.Y_test)
