@@ -8,6 +8,33 @@ import matplotlib.pyplot as plt
 from os import path
 
 file = "Crimes1MEq" # ne pas écrire .csv
+ignorePreprocessedFile = False
+
+def bestNumberOfClusters(prepro, train, n = 12):
+    if ignorePreprocessedFile == False:
+        print("file needs to be reprocessed")
+        return
+    fig, ax = plt.subplots(1, 1, figsize=(10,6))
+    score_list = []
+    cluster_list = range(1, 71, 5)
+    for cluster in cluster_list:
+        prepro.Kmeans_coordinate(25)
+        prepro.remove_Kmeans_coordinate()
+        prepro.ajout_Kmeans_coordinate()
+        X, Y = prepro.XYsplit(data_encodée)
+        train.load_data(X, Y)
+        print(cluster)
+        score = 0
+        for _ in range(n):
+            train.traintestsplit(0.3)
+            score += train.fit_DecisionTree(True)
+        score_list += [score/n]
+    ax.plot(cluster_list, score_list)
+    ax.set_xlabel("clusters")
+    ax.set_ylabel("score")
+    ax.set_title("best number of clusters")
+    plt.savefig("bestNumClusters")
+
 
 def bestParamDecisionTree(train, X, Y):
     """
@@ -80,7 +107,6 @@ def comparaison_features(train, X, Y):
     panda_Tree = pd.DataFrame(compar_date_lieu_Tree, columns=lieux, index=dates)
     print(panda_Tree)
 
-ignorePreprocessedFile = False
 print("\n----------------------Début du preprocessing-----------------------\n") 
 if path.isfile(f"{file}_prepro.csv") and not ignorePreprocessedFile:
     print(f"file found, re-using {file}_prepro.csv !")
@@ -90,12 +116,11 @@ else:
     time_before = time.time()
     prepro = preprocessing.preprocessing(file)
     prepro.ajout_dates()
-    prepro.Kmeans_coordinate(50)
+    prepro.Kmeans_coordinate(40)
     prepro.ajout_Kmeans_coordinate()
     #prepro.affiche_Kmeans_coordinate()
     data_encodée = prepro.encodage_features()
     prepro.save_to_csv(file)
-    data_encodée = prepro.encodage_features()
     time_after = time.time()
     print("Temps pour le preprocessing : ", (time_after-time_before), " secondes\n")
 
@@ -104,13 +129,17 @@ train = train.train(X,Y)
 train.traintestsplit(0.3)
 
 #bestParamDecisionTree(train, X, Y)
-comparaison_features(train, X, Y)
+#comparaison_features(train, X, Y)
+#bestNumberOfClusters(prepro, train)
 
 train.traintestsplit(0.3)
 display = True
 print("\n----------Début du training_GaussienNB------------\n")      
 train.fit_GaussNB(display)
+
 print("\n----------Début du training_DecisionTree----------\n")
 train.fit_DecisionTree(display)
+train.DecisionTree_feature_importances(prepro.features_description)
+
 #print("\n----------Début du training_RandomForestClassifier----------\n")
 #train.fit_RandomForestClassifier(display)
