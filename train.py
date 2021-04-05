@@ -48,8 +48,6 @@ class train:
         return clf.score(self.X_test, self.Y_test)
 
     def DecisionTree_feature_importances(self, feature_description):
-        print(feature_description.shape)
-        print(np.shape(self.clf.feature_importances_))
         fig, ax = plt.subplots(1, 1, figsize=(20,10))
         #ax.bar(self.clf.feature_importances_, 17, density=True)
         b = ax.bar(range(17), self.clf.feature_importances_)

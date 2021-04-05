@@ -64,14 +64,24 @@ class preprocessing:
                 np.zeros(size, dtype=int), np.zeros(size, dtype=int), np.zeros(size, dtype=int)
         for i, k in enumerate(date):
             heure = int(k[11:13]) + (k[-2:]=="PM")*12
-            if(heure>=6 and heure<10):
+            if(heure>=1 and heure<5):
                 date1[i]=0
-            elif(heure>=10 and heure<18):
+            elif(heure>=5 and heure<7):
                 date1[i]=1
-            elif(heure>=18 and heure<22):
+            elif(heure>=7 and heure<10):
                 date1[i]=2
-            else:
+            elif(heure>=10 and heure<12):
                 date1[i]=3
+            elif(heure>=12 and heure<16):
+                date1[i]=4
+            elif(heure>=16 and heure<18):
+                date1[i]=5
+            elif(heure>=18 and heure<21):
+                date1[i]=6
+            elif(heure>=21 and heure<23):
+                date1[i]=7
+            else:
+                date1[i]=8
 
             jour = k[3:5]
             mois = k[0:2]
