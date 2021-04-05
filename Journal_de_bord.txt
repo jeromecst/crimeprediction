@@ -28,52 +28,42 @@ Création du fichier affichage.ipynb afin de mieux visualiser les données. → 
 7) Essaie avec la classe Kmeans SKlearn: enorme gain de performance, 
 plus de problème de clusters qui disparaissent.
 
-TODO à faire à la prochaine séance : 
-
--Créer une classe main.py pour avoir une base qui marche bien
--Essayer d'utiliser le PCA et voir ce que ça donne
-
 
 === 1ER AVRIL 2021 ===
 
-0)
-Au finale on a utilié la class kmeans de scikit_learn et ça marche, pas de bug
-
-1)
-Création de la classe preprocessing (nom à changer) à partir de data.py!
-En gros on a regroupé en fonctions le bouts de codes qui trainaient. Et ça compile! 
-Du coup maintenant on a des fonctions à appeler relativement facilement.
-
-2)
-Création de la classe train.py qui va nous permettre d'entraîner nos données
-
-3)
-Création de la classe main.py qui va nous permettre de tester tout notre programme, super!
+- Au finale on a utilié la class kmeans de scikit_learn et ça marche, pas de bug
+- Création de la classe preprocessing (nom à changer) à partir de data.py!
+- En gros on a regroupé en fonctions le bouts de codes qui trainaient. Et ça compile! 
+- Du coup maintenant on a des fonctions à appeler relativement facilement.
+- Création de la classe train.py qui va nous permettre d'entraîner nos données
+- Création de la classe main.py qui va nous permettre de tester tout notre programme, super!
 
 === 2 AVRIL 2021 ===
 
-1) Ajouts de l'affichage de l'encodage dans le main
-
-2) Ajout d'un fichier commandes qui contient l'ensemble des commandes shell qui 
+- Ajouts de l'affichage de l'encodage dans le main
+- Ajout d'un fichier commandes qui contient l'ensemble des commandes shell qui 
 permettent de manipuler le data set.
-
-3) Dans le preprocessing.py, ajout du split data → X/Y
-
-4) Gestion du header donc on pourra facilement retrouver quelle colonne correspond 
-à quelle feature.
-
-5) Ajout du README
-
-6) Affichage beaucoup plus évolué où les clusters les plus important ont une couleur plus
+- Dans le preprocessing.py, ajout du split data → X/Y
+- Gestion du header donc on pourra facilement retrouver quelle colonne correspond quelle feature.
+- Ajout du README
+- Affichage beaucoup plus évolué où les clusters les plus important ont une couleur plus
 vive.
 
 === 4 AVRIL 2021 ===
 
-1) Gain de temps en sauvegardant les données préprocessés
+- Gain de temps en sauvegardant les données préprocessés
+- Training en GaussianNB et DecisionTreeClassifier : score 0.89
+- Equilibrage du dataset (voir le fichier commandes)
+- Optimisation des paramètres du DecisionTreeClassifier 
 
-2) Training en GaussianNB et DecisionTreeClassifier
+=== 5 AVRIL 2021 ===
 
-3) Equilibrage du dataset (voir le fichier commandes)
+- Score : entre 0.90 et 0.92 suivant les données
+- Recherche du meilleur nombre de cluster
+- Affichage de l'importance des features : 
+	- On voit que beaucoup de nos features n'ont pas beaucoup d'influence
 
 TODO à faire à la prochaine séance : 
--Essayer d'utiliser le PCA et voir ce que ça donne
+- Sauvegarder l'encodage dans un fichier pour qu'il soit disponible quand on ne refait pas le 
+préprocessing
+- Essayer d'utiliser le PCA et voir ce que ça donne
