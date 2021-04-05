@@ -7,7 +7,7 @@ import os.path
 import matplotlib.pyplot as plt
 from os import path
 
-file = "Crimes1MEq" # ne pas écrire .csv
+file = "Crimes100KEq" # ne pas écrire .csv
 ignorePreprocessedFile = False
 
 def bestNumberOfClusters(prepro, train, n = 12):
