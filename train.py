@@ -47,6 +47,12 @@ class train:
         self.clf = clf
         return clf.score(self.X_test, self.Y_test)
 
+    def predict_DecisionTree(self):
+        return self.clf.predict(self.X_test), self.Y_test
+    
+    def model_DecisionTree(self):
+        return self.clf
+    
     def DecisionTree_feature_importances(self, feature_description):
         fig, ax = plt.subplots(1, 1, figsize=(20,10))
         #ax.bar(self.clf.feature_importances_, 17, density=True)
