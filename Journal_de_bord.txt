@@ -68,7 +68,15 @@ permettent de manipuler le data set.
 vive.
 
 TODO à faire à la prochaine séance : 
--Créer les X_train, Y_train etc.
--Entrainer nos données
+-Entrainer nos données OK
 -Essayer d'utiliser le PCA et voir ce que ça donne
 -Equilibrer le dataset afin d'avoir à peu près 50/50 d'arrestation.
+
+
+4 avril 2021:
+
+1) Création d'un entrainement de nos données selon les modèles Bayesiens naif et Decision Tree. On obtient les valeurs suivantes :
+
+>>>Ratio de bien placé pour le Bayessien naif =  0.8125666666666667
+
+>>>Ratio de bien placé pour le Decision tree =  0.8239333333333333
