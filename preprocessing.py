@@ -18,7 +18,8 @@ class preprocessing:
             self.data = pd.read_csv(f"{fichierCSV}_prepro.csv", low_memory=False)
             headers = self.data.columns
             self.data_panda = self.data.copy()
-            self.features_description = headers.to_numpy(copy=True)
+            self.features_description_private = headers.to_numpy(copy=True)
+            self.features_description = 0
             
             self.data = self.data.to_numpy()
         else:
@@ -28,10 +29,10 @@ class preprocessing:
 
             X_coordinate = self.data['X Coordinate']
             Y_coordinate = self.data['Y Coordinate']
-            self.Coordinates = np.c_[X_coordinate, Y_coordinate]
+            self.Coordinates = np.c_[X_coordinate.copy(), Y_coordinate.copy()]
             
             headers = self.data.columns
-            self.features_description = headers.to_numpy(copy=True)
+            self.features_description_private = headers.to_numpy(copy=True)
             
             self.data = self.data.to_numpy()
     
@@ -63,14 +64,24 @@ class preprocessing:
                 np.zeros(size, dtype=int), np.zeros(size, dtype=int), np.zeros(size, dtype=int)
         for i, k in enumerate(date):
             heure = int(k[11:13]) + (k[-2:]=="PM")*12
-            if(heure>=6 and heure<10):
+            if(heure>=1 and heure<5):
                 date1[i]=0
-            elif(heure>=10 and heure<18):
+            elif(heure>=5 and heure<7):
                 date1[i]=1
-            elif(heure>=18 and heure<22):
+            elif(heure>=7 and heure<10):
                 date1[i]=2
-            else:
+            elif(heure>=10 and heure<12):
                 date1[i]=3
+            elif(heure>=12 and heure<16):
+                date1[i]=4
+            elif(heure>=16 and heure<18):
+                date1[i]=5
+            elif(heure>=18 and heure<21):
+                date1[i]=6
+            elif(heure>=21 and heure<23):
+                date1[i]=7
+            else:
+                date1[i]=8
 
             jour = k[3:5]
             mois = k[0:2]
@@ -91,16 +102,18 @@ class preprocessing:
         dates = ['Part of the day', 'Weekday', 'Weekend', 'Month', 'Hour']
         for d in dates:
             if(date_i !=d):
-                id_d = self.features_description == d
-                np.delete(X, id_d)
+                id_d = self.features_description_private == d
+                np.delete(X, id_d, 1)
     
     def extract_lieu(self, X, lieu_i):
         lieux = ['Ward', 'Community Area', 'District', 'Cluster']
         for l in lieux:
             if(l != lieu_i):
-                id_l = self.features_description == l
-                np.delete(X, id_l)
+                id_l = self.features_description_private == l
+                np.delete(X, id_l, 1)
         
+
+
     def Kmeans_coordinate(self, K):
         '''
         On applique l'algorithme des kmeans de la classe 
@@ -124,8 +137,6 @@ class preprocessing:
         print("Création image affichage_coordonnee")
         plt.savefig("affichage_coordonnee")
 
-        
-        
     def affiche_Kmeans_coordinate(self):
         '''
         Crée un fichier affichage_Kmoyenne.png des coodonnées 
@@ -154,16 +165,21 @@ class preprocessing:
         plt.savefig('affichage_Kmoyenne')
 
     
+    def remove_Kmeans_coordinate(self):
+        ids = np.where(self.features_description_private == "Cluster")
+        self.data = np.delete(self.data, ids, 1)
+        self.features_description_private = np.delete(self.features_description_private, ids)
+        
     def ajout_Kmeans_coordinate(self):
         '''
         Ajoute une nouvelle features de prediction des crimes grace aux kmeans
         '''
         self.data = np.c_[self.data, self.km_predicts]
-        self.features_description = np.append(self.features_description, "Cluster")
+        self.features_description_private = np.append(self.features_description_private, "Cluster")
         for str in ["X Coordinate", "Y Coordinate"]:
-            todelete = np.where(self.features_description == str)
+            todelete = np.where(self.features_description_private == str)
             self.data = np.delete(self.data, todelete, 1)
-            self.features_description = np.delete(self.features_description, todelete)
+            self.features_description_private = np.delete(self.features_description_private, todelete)
     
     def ajout_dates(self):
         '''
@@ -172,10 +188,10 @@ class preprocessing:
         '''
         date1, date2, date3, date4, date5 = self.split_date()
         self.data = np.c_[self.data,date1, date2, date3, date4, date5]
-        todelete = np.where(self.features_description == "Date")
+        todelete = np.where(self.features_description_private == "Date")
         self.data = np.delete(self.data, todelete, 1)
-        self.features_description = np.delete(self.features_description, todelete)
-        self.features_description = np.append(self.features_description, ['Part of the day', 'Weekday', 'Weekend', 'Month', 'Hour'])
+        self.features_description_private = np.delete(self.features_description_private, todelete)
+        self.features_description_private = np.append(self.features_description_private, ['Part of the day', 'Weekday', 'Weekend', 'Month', 'Hour'])
 
     def encodage_features(self):
         OE = OrdinalEncoder()
@@ -186,12 +202,12 @@ class preprocessing:
         return X
 
     def XYsplit(self, data):
-        id_arrest = self.features_description == 'Arrest'
+        id_arrest = self.features_description_private == 'Arrest'
         X = data[:, id_arrest!=True]
         Y = data[:, id_arrest]
-        self.features_description = self.features_description[id_arrest != True]
+        self.features_description = self.features_description_private[id_arrest != True]
         return X, Y.flatten()
 
     def save_to_csv(self, title):
         print(f"Saving file to {title}_prepro.csv...")
-        pd.DataFrame(self.data_encodée).to_csv(f"{title}_prepro.csv", header = self.features_description, index=False)
+        pd.DataFrame(self.data_encodée).to_csv(f"{title}_prepro.csv", header = self.features_description_private, index=False)

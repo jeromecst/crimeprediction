@@ -1,8 +1,10 @@
 import numpy as np
 import sklearn
+import matplotlib.pyplot as plt
 
 from sklearn.naive_bayes import GaussianNB
 from sklearn import tree
+from sklearn.ensemble import RandomForestClassifier
 
 class train:
     def __init__(self, X, Y):
@@ -14,6 +16,7 @@ class train:
         self.X_test = 0
         self.Y_train = 0
         self.Y_test = 0
+        self.clf = 0
 
     def load_data(self, X, Y):
         self.X = X
@@ -25,22 +28,38 @@ class train:
         self.X_train, self.X_test, self.Y_train, self.Y_test = \
                 sklearn.model_selection.train_test_split(self.X, self.Y, test_size=test_ratio)
 
-    def fit_GaussNB(self):
+    def fit_GaussNB(self, display=False):
         '''
         Entraînement de notre modèle
         '''
         gnb = GaussianNB()
         gnb.fit(self.X_train, self.Y_train)
-        y_pred = gnb.predict(self.X_test)
-        #print("Ratio de bien placé pour le Bayessien naif = ", ((self.Y_test == y_pred).sum() / self.X_test.shape[0]))
-        return ((self.Y_test == y_pred).sum() / self.X_test.shape[0])
+        if(display):
+            print("Score GaussNB : ", gnb.score(self.X_test, self.Y_test))
+        return gnb.score(self.X_test, self.Y_test)
 
         
-        
-    def fit_DecisionTree(self):
-        clf = tree.DecisionTreeClassifier()
+    def fit_DecisionTree(self, display=False, min_samples_split = 130, min_samples_leaf = 60, max_features = 17, min_impurity_decrease = 0.0):
+        clf = tree.DecisionTreeClassifier(min_samples_split = min_samples_split, min_samples_leaf = min_samples_leaf, max_features = max_features, min_impurity_decrease = min_impurity_decrease)
         clf = clf.fit(self.X_train, self.Y_train)
-        y_pred = clf.predict(self.X_test)
-        #print("Ratio de bien placé pour le Decision tree = ", ((self.Y_test == y_pred).sum() / self.X_test.shape[0]))
-        return ((self.Y_test == y_pred).sum() / self.X_test.shape[0])
-        
+        if(display):
+            print("Score DecisionTree : ", clf.score(self.X_test, self.Y_test))
+        self.clf = clf
+        return clf.score(self.X_test, self.Y_test)
+
+    def DecisionTree_feature_importances(self, feature_description):
+        fig, ax = plt.subplots(1, 1, figsize=(20,10))
+        #ax.bar(self.clf.feature_importances_, 17, density=True)
+        b = ax.bar(range(17), self.clf.feature_importances_)
+        ax.bar_label(b, labels=feature_description)
+        ax.set_xlabel("feature description")
+        ax.set_ylabel("feature importance")
+        plt.savefig("feature_importance")
+
+
+    def fit_RandomForestClassifier(self, display=False, min_samples_split = 130, min_samples_leaf = 60, max_features = 17, min_impurity_decrease = 0.0):
+        rfc = RandomForestClassifier(n_jobs = 4, n_estimators = 1000, min_samples_split = min_samples_split, min_samples_leaf = min_samples_leaf, max_features = max_features, min_impurity_decrease = min_impurity_decrease)
+        rfc  = rfc.fit(self.X_train, self.Y_train)
+        if(display):
+            print("Score RandomForestClassifier : ", rfc.score(self.X_test, self.Y_test))
+        return rfc.score(self.X_test, self.Y_test)
