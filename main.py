@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import preprocessing
 import train
+import vizualisation
 import time
 import os.path
 import matplotlib.pyplot as plt
@@ -139,7 +140,15 @@ train.fit_GaussNB(display)
 
 print("\n----------Début du training_DecisionTree----------\n")
 train.fit_DecisionTree(display)
-train.DecisionTree_feature_importances(prepro.features_description)
+#train.DecisionTree_feature_importances(prepro.features_description)
+
+print("\n----------Début de la visualisation----------\n")
+
+clf = train.model_DecisionTree()
+y_pred_Decision_Tree, Y_test = train.predict_DecisionTree()
+vizu = vizualisation.vizualisation(prepro)
+vizu.matrice_confusion(y_pred_Decision_Tree, Y_test)
+vizu.DecisionTree_plot(clf)
 
 #print("\n----------Début du training_RandomForestClassifier----------\n")
 #train.fit_RandomForestClassifier(display)
