@@ -64,6 +64,7 @@ vive.
 	- On voit que beaucoup de nos features n'ont pas beaucoup d'influence
 
 TODO à faire à la prochaine séance : 
+
 - Sauvegarder l'encodage dans un fichier pour qu'il soit disponible quand on ne refait pas le 
 préprocessing
 - Essayer d'utiliser le PCA et voir ce que ça donne
