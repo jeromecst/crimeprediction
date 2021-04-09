@@ -14,11 +14,8 @@ grep -E '^(([^,]*,)|("[^"]*",)){8}false' Crimes100K.csv > CrimesCleanNonArrested
 grep -E '^(([^,]*,)|("[^"]*",)){8}true' Crimes100K.csv > CrimesCleanArrested.csv
 
 # Ici on recombine en n'oubliant pas le header contenant le nom des features
-head -n 1 CrimesClean.csv > Crimes1MEq.csv
-head -n 500000 CrimesCleanNonArrested.csv >> Crimes1MEq.csv
-head -n 500000 CrimesCleanArrested.csv >> Crimes1MEq.csv
-
-# Idem pour 100K features
-head -n 1 CrimesClean.csv > Crimes100KEq.csv
-head -n 50000 CrimesCleanNonArrested.csv >> Crimes100KEq.csv
-head -n 50000 CrimesCleanArrested.csv >> Crimes100KEq.csv
+head -n 1 CrimesClean.csv > CrimesEq.csv
+n=$(wc -l CrimesCleanArrested.csv | grep -E -o '[0-9]+ ')
+cp CrimesCleanArrested.csv tmp.csv
+head -n $n CrimesCleanNonArrested.csv >> tmp.csv
+shuf tmp.csv >> CrimesEq.csv

@@ -23,6 +23,7 @@ class train:
         self.Y = Y
         self.N = X.shape[0]
         self.D = X.shape[1]
+        self.clf = 0
 
     def traintestsplit(self, test_ratio=.3):
         self.X_train, self.X_test, self.Y_train, self.Y_test = \
@@ -58,7 +59,7 @@ class train:
 
 
     def fit_RandomForestClassifier(self, display=False, min_samples_split = 130, min_samples_leaf = 60, max_features = 17, min_impurity_decrease = 0.0):
-        rfc = RandomForestClassifier(n_jobs = 4, n_estimators = 1000, min_samples_split = min_samples_split, min_samples_leaf = min_samples_leaf, max_features = max_features, min_impurity_decrease = min_impurity_decrease)
+        rfc = RandomForestClassifier(n_jobs = 4, n_estimators = 100, min_samples_split = min_samples_split, min_samples_leaf = min_samples_leaf, max_features = max_features, min_impurity_decrease = min_impurity_decrease)
         rfc  = rfc.fit(self.X_train, self.Y_train)
         if(display):
             print("Score RandomForestClassifier : ", rfc.score(self.X_test, self.Y_test))

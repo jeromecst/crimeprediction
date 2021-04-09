@@ -7,7 +7,7 @@ import os.path
 import matplotlib.pyplot as plt
 from os import path
 
-file = "Crimes100KEq" # ne pas écrire .csv
+file = "new" # ne pas écrire .csv
 ignorePreprocessedFile = False
 
 def bestNumberOfClusters(prepro, train, n = 12):
@@ -76,6 +76,24 @@ def bestParamDecisionTree(train, X, Y):
 
     plt.savefig("bestParamDecisionTree")
 
+def bestNumberData(train):
+    X, Y = prepro.XYsplit(data_encodée)
+    score = []
+    N = X.shape[0]
+    fig, ax = plt.subplots(1, 1, figsize=(12, 8))
+    the_range = np.linspace(N, 3*N/4, 20, dtype=int)
+    for n in the_range:
+        Xsub = X[:int(n)].copy()
+        Ysub = Y[:int(n)].copy()
+        train.load_data(Xsub, Ysub)
+        train.traintestsplit(0.3)
+        score += [train.fit_DecisionTree(True)]
+    ax.plot(the_range, score)
+    ax.set_xlabel("Dataset size")
+    ax.set_ylabel("Score")
+    ax.legend()
+    plt.savefig("bestNumberData")
+
 def affichage_encodage():
     for i in range(len(prepro.features_description)):
         for j in range(2):
@@ -131,15 +149,19 @@ train.traintestsplit(0.3)
 #bestParamDecisionTree(train, X, Y)
 #comparaison_features(train, X, Y)
 #bestNumberOfClusters(prepro, train)
+bestNumberData(train)
 
-train.traintestsplit(0.3)
+#train.traintestsplit(0.3)
 display = True
-print("\n----------Début du training_GaussienNB------------\n")      
-train.fit_GaussNB(display)
-
+#print("\n----------Début du training_GaussienNB------------\n")      
+#train.fit_GaussNB(display)
+#
 print("\n----------Début du training_DecisionTree----------\n")
+X, Y = prepro.XYsplit(data_encodée)
+train.load_data(X,Y)
+train.traintestsplit(0.3)
 train.fit_DecisionTree(display)
 train.DecisionTree_feature_importances(prepro.features_description)
 
-#print("\n----------Début du training_RandomForestClassifier----------\n")
-#train.fit_RandomForestClassifier(display)
+print("\n----------Début du training_RandomForestClassifier----------\n")
+train.fit_RandomForestClassifier(display)
