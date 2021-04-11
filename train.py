@@ -40,7 +40,7 @@ class train:
         return gnb.score(self.X_test, self.Y_test)
 
         
-    def fit_DecisionTree(self, display=False, min_samples_split = 130, min_samples_leaf = 60, max_features = 17, min_impurity_decrease = 0.0):
+    def fit_DecisionTree(self, display=False, min_samples_split = 130, min_samples_leaf = 60, max_features = None, min_impurity_decrease = 0.0):
         clf = tree.DecisionTreeClassifier(min_samples_split = min_samples_split, min_samples_leaf = min_samples_leaf, max_features = max_features, min_impurity_decrease = min_impurity_decrease)
         clf = clf.fit(self.X_train, self.Y_train)
         if(display):
@@ -56,15 +56,15 @@ class train:
     
     def DecisionTree_feature_importances(self, feature_description):
         fig, ax = plt.subplots(1, 1, figsize=(20,10))
-        #ax.bar(self.clf.feature_importances_, 17, density=True)
-        b = ax.bar(range(17), self.clf.feature_importances_)
+        n = feature_description.size
+        b = ax.bar(range(n), self.clf.feature_importances_)
         ax.bar_label(b, labels=feature_description)
         ax.set_xlabel("feature description")
         ax.set_ylabel("feature importance")
         plt.savefig("feature_importance")
 
 
-    def fit_RandomForestClassifier(self, display=False, min_samples_split = 130, min_samples_leaf = 60, max_features = 17, min_impurity_decrease = 0.0):
+    def fit_RandomForestClassifier(self, display=False, min_samples_split = 130, min_samples_leaf = 60, max_features = None, min_impurity_decrease = 0.0):
         rfc = RandomForestClassifier(n_jobs = 4, n_estimators = 100, min_samples_split = min_samples_split, min_samples_leaf = min_samples_leaf, max_features = max_features, min_impurity_decrease = min_impurity_decrease)
         rfc  = rfc.fit(self.X_train, self.Y_train)
         if(display):
