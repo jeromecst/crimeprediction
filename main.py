@@ -8,7 +8,7 @@ import os.path
 import matplotlib.pyplot as plt
 from os import path
 
-file = "new" # ne pas écrire .csv
+file = "Crimes100KEq" # ne pas écrire .csv
 ignorePreprocessedFile = False
 
 def bestNumberOfClusters(prepro, train, n = 12):
@@ -137,13 +137,13 @@ else:
     prepro.ajout_dates()
     prepro.Kmeans_coordinate(40)
     prepro.ajout_Kmeans_coordinate()
-    #prepro.affiche_Kmeans_coordinate()
+    prepro.affiche_Kmeans_coordinate()
     data_encodée = prepro.encodage_features()
     prepro.save_to_csv(file)
     time_after = time.time()
     print("Temps pour le preprocessing : ", (time_after-time_before), " secondes\n")
 
-X, Y = prepro.XYsplit(data_encodée)
+'''X, Y = prepro.XYsplit(data_encodée)
 train = train.train(X,Y)
 train.traintestsplit(0.3)
 
@@ -174,3 +174,4 @@ print("\n----------Début de la visualisation----------\n")
 
 print("\n----------Début du training_RandomForestClassifier----------\n")
 train.fit_RandomForestClassifier(display)
+'''
