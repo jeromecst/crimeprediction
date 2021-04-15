@@ -42,7 +42,7 @@ def bestNumberOfClusters(prepro, train, n = 12):
     ax.set_xlabel("clusters")
     ax.set_ylabel("score")
     ax.set_title("best number of clusters")
-    plt.savefig("bestNumClusters")
+    plt.savefig("Images/bestNumClusters")
 
 
 def bestParamDecisionTree(train, X, Y):
@@ -83,7 +83,7 @@ def bestParamDecisionTree(train, X, Y):
     ax[1][1].set_xlabel("min_impurity_decrease")
     ax[1][1].set_ylabel("score")
 
-    plt.savefig("bestParamDecisionTree")
+    plt.savefig("Images/bestParamDecisionTree")
 
 def bestNumberData(train):
     X, Y = prepro.XYsplit(data_encodée)
@@ -101,7 +101,7 @@ def bestNumberData(train):
     ax.set_xlabel("Dataset size")
     ax.set_ylabel("Score")
     ax.legend()
-    plt.savefig("bestNumberData")
+    plt.savefig("Images/bestNumberData")
 
 def affichage_encodage():
     for i in range(len(prepro.features_description)):
@@ -148,7 +148,7 @@ else:
     time_after = time.time()
     print("Temps pour le preprocessing : ", (time_after-time_before), " secondes\n")
 
-'''X, Y = prepro.XYsplit(data_encodée)
+X, Y = prepro.XYsplit(data_encodée)
 train = train.train(X,Y)
 train.traintestsplit(0.3)
 
@@ -174,8 +174,7 @@ clf = train.model_DecisionTree()
 y_pred_Decision_Tree, Y_test = train.predict_DecisionTree()
 vizu = vizualisation.vizualisation(prepro)
 vizu.matrice_confusion(y_pred_Decision_Tree, Y_test)
-vizu.DecisionTree_plot(clf)
+#vizu.DecisionTree_plot(clf)
 
 print("\n----------Début du training_RandomForestClassifier----------\n")
 train.fit_RandomForestClassifier(display)
-'''
