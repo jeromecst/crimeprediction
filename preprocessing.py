@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from datetime import datetime
 from sklearn.preprocessing import OrdinalEncoder
+from matplotlib import cm
+import matplotlib.colors as colors
 
 class preprocessing:
     
@@ -120,6 +122,7 @@ class preprocessing:
         scikit_learn aux coordonnées des crimes.
         @Param : K -> int : Nombre de clusters
         '''
+        
         self.km = KMeans(K)
         self.km_predicts = self.km.fit_predict(self.Coordinates)
         self.km_clusters = np.zeros(K, dtype=int)
@@ -147,15 +150,18 @@ class preprocessing:
         crimes_sorted = self.km_clusters[ids]
         point = self.km.cluster_centers_[ids]
 
-        predicts_colors = []
+        #predicts_colors = []
+        predict_0_1 = []
         maax = crimes_sorted[-1]
         for i in range(self.data.shape[0]):
             c = self.km_clusters[self.km_predicts[i]]/maax
-            predicts_colors += [(c, c, 0)]
-
+            #predicts_colors += [(c, c, 0)]
+            predict_0_1 += [c]
 
         fig, ax = plt.subplots(1, 1, figsize=(20, 20))
-        ax.scatter(self.Coordinates[:,0], self.Coordinates[:,1], c=predicts_colors, s=.5, marker='.')
+        affichage = ax.scatter(self.Coordinates[:,0], self.Coordinates[:,1],c=predict_0_1, s=.5, marker='.', cmap=plt.cm.Reds)
+        fig.colorbar(affichage,ax=ax)
+
         #for i in range(1, 6):
         #    plt.scatter(point[-i,0], point[-i,1], label=i+1, s = 400, c='red', marker='*')
         #    plt.text(point[-i,0], point[-i,1], i, c='black', ha="center", va="center", size=10)
