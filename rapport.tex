@@ -51,7 +51,7 @@
 
     \section{Préprocessing}
     Comme le dataset contenait peu de features, 
-    nous avons effectué plusieurs modifications sur le dataset avec d'entrainer notre modèle.
+    nous avons effectué plusieurs modifications sur le dataset avant d'entrainer notre modèle.
     De plus, certaines features étaient uniques pour chacun de nos crimes.
 
     Nous avons tout d'abord supprimer les données qui contenaient des features vides, et nous avons
@@ -86,7 +86,7 @@
 	    \item Latitude
 	    \item Location
     \end{itemize}
-    À partir de la feature date, nous avons extrait les features suivantes
+    À partir de la feature \textit{date}, nous avons extrait les features suivantes
     \begin{itemize}
 	    \item Part of the day
 	    \item Weekday
@@ -101,8 +101,11 @@
 	    \includegraphics[scale=.3]{Images/carte_densité.png}
 	    \caption{Clusters des crimes de Chicago}
     \end{figure}
+    + COMMENTAIRE
 
     \section{Choix d'algorithme}
+    Comme notre dataset est assez conséquent, nous avons utilisé les algorithmes 
+    de la bibliothèque \textit{scikit-learn}.
     Pour classifier nos crimes, nous utilisons le DecisionTree et le modèle Gaussien Naïf.
     Différentes fonctions dans le fichier main.py nous ont permis de déterminer les meilleurs
     hyper-paramètres à choisir pour le DecisionTree.
