@@ -38,3 +38,21 @@ class vizualisation:
                    filled=True)
         plt.savefig("Images/Arbre de décision")
         
+        
+        
+    def affichage_BAR_Primary_Type(self):
+        Primary_Type = np.unique(self.prepro.data_panda['Primary Type'].to_numpy())
+        Proportion_Primary_Type = np.empty(len(Primary_Type))
+        nb_tot = 1000000
+        for k, prim_type in enumerate(Primary_Type):
+            nb = np.sum(np.where(self.prepro.data_panda['Primary Type']==prim_type,1,0))
+            Proportion_Primary_Type[k] = nb/nb_tot
+
+        A = Primary_Type[Proportion_Primary_Type>0.01]
+        B = Proportion_Primary_Type[Proportion_Primary_Type>0.01]
+        fig, ax = plt.subplots(1, 1)
+        b = ax.bar(A, B, 1.0)
+        ax.bar_label(b, labels=A)
+        ax.set_xlabel("Primary_Type")
+        ax.set_ylabel("Proportion Primary_Type/1M")
+        plt.savefig("Images/BAR_Primary_Type")
