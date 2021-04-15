@@ -166,15 +166,17 @@ X, Y = prepro.XYsplit(data_encodée)
 train.load_data(X,Y)
 train.traintestsplit(0.3)
 train.fit_DecisionTree(display)
-train.DecisionTree_feature_importances(prepro.features_description)
+#train.DecisionTree_feature_importances(prepro.features_description)
 
+
+'''print("\n----------Début du training_RandomForestClassifier----------\n")
+train.fit_RandomForestClassifier(display)
+'''
 print("\n----------Début de la visualisation----------\n")
 
 clf = train.model_DecisionTree()
 y_pred_Decision_Tree, Y_test = train.predict_DecisionTree()
 vizu = vizualisation.vizualisation(prepro)
 vizu.matrice_confusion(y_pred_Decision_Tree, Y_test)
+vizu.affichage_BAR_Primary_Type()
 #vizu.DecisionTree_plot(clf)
-
-print("\n----------Début du training_RandomForestClassifier----------\n")
-train.fit_RandomForestClassifier(display)
