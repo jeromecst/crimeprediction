@@ -43,18 +43,25 @@ class vizualisation:
     def affichage_BAR_Primary_Type(self):
         Primary_Type = np.unique(self.prepro.data_panda['Primary Type'].to_numpy())
         Proportion_Primary_Type = np.empty(len(Primary_Type))
+        Proportion_arrest = np.empty(len(Primary_Type))
         nb_tot = self.prepro.data.shape[0]
         for k, prim_type in enumerate(Primary_Type):
-            nb = np.sum(np.where(self.prepro.data_panda['Primary Type']==prim_type,1,0))
-            Proportion_Primary_Type[k] = nb/nb_tot
-
+            nb_crime = np.sum(np.where(self.prepro.data_panda['Primary Type']==prim_type,1,0))
+            Proportion_Primary_Type[k] = nb_crime/nb_tot
+            nb_arrest = np.sum(np.where(((self.prepro.data_panda['Primary Type']==prim_type) & (self.prepro.data_panda['Arrest']==1)),1,0))
+            Proportion_arrest[k] = nb_arrest/nb_crime
         pourcentage = .03
         A = Primary_Type[Proportion_Primary_Type>pourcentage]
         B = Proportion_Primary_Type[Proportion_Primary_Type>pourcentage]
-        fig, ax = plt.subplots(1, 1, figsize=(15, 10))
-        b = ax.bar(range(len(A)), B, width=.95)
-        ax.bar_label(b, labels=A)
-        ax.set_xlabel("Primary_Type")
-        ax.set_ylabel("Proportion Primary_Type/1M")
+        fig, ax = plt.subplots(1, 2, figsize=(15, 10))
+        b0 = ax[0].bar(range(len(A)), B, width=.95)
+        ax[0].bar_label(b0, labels=A)
+        ax[0].set_xlabel("Primary_Type")
+        ax[0].set_ylabel("Proportion Primary_Type/nb_donnees")
+        b1 = ax[1].bar(range(len(Primary_Type)), Proportion_arrest, width=.95)
+        ax[1].bar_label(b1, labels=A)
+        ax[1].set_xlabel("Primary_Type")
+        ax[1].set_ylabel("Proportion Primary_Type/nb_donnees")
+        
         plt.savefig("Images/BAR_Primary_Type")
 
