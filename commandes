@@ -17,5 +17,5 @@ grep -E '^(([^,]*,)|("[^"]*",)){8}true' Crimes100K.csv > CrimesCleanArrested.csv
 head -n 1 CrimesClean.csv > CrimesEq.csv
 n=$(wc -l CrimesCleanArrested.csv | grep -E -o '[0-9]+ ')
 cp CrimesCleanArrested.csv tmp.csv
-head -n $n CrimesCleanNonArrested.csv >> tmp.csv
+shuf -n $n CrimesCleanNonArrested.csv >> tmp.csv
 shuf tmp.csv >> CrimesEq.csv
