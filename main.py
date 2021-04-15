@@ -3,13 +3,21 @@ import pandas as pd
 import preprocessing
 import train
 import vizualisation
+import sys
 import time
-import os.path
 import matplotlib.pyplot as plt
 from os import path
-
-file = "Crimes100KEq" # ne pas écrire .csv
-ignorePreprocessedFile = False
+ 
+if(len(sys.argv) < 2):
+    print("Specify a file\n Example : python main.py Crimes100KEq.csv")
+    exit(1)
+else:
+    file = str(sys.argv[1][:-4])
+    print(file)
+if(len(sys.argv) > 2):
+    ignorePreprocessedFile = bool(str(sys.argv)[2])
+else:
+    ignorePreprocessedFile = False
 
 def bestNumberOfClusters(prepro, train, n = 12):
     if ignorePreprocessedFile == False:
@@ -112,12 +120,9 @@ def comparaison_features(train, X, Y):
             X_temp, Y_temp = X.copy(), Y.copy()
             prepro.extract_date(X_temp, date_i)
             prepro.extract_lieu(X_temp, lieu_i)
-            #print(f"----------------------Début du training, avec date_i = {date_i} et lieu_i = {lieu_i}-----------------------\n")      
             train.load_data(X_temp,Y_temp)
             train.traintestsplit(0.3)
-            #print("\n----------Début du training_GaussienNB------------\n")      
             compar_date_lieu_Gauss[i][j]=train.fit_GaussNB()
-            #print("\n----------Début du training_DecisionTree----------\n")
             compar_date_lieu_Tree[i][j]=train.fit_DecisionTree()
         
     panda_Gauss = pd.DataFrame(compar_date_lieu_Gauss, columns=lieux, index=dates)
@@ -152,11 +157,10 @@ train.traintestsplit(0.3)
 #bestNumberOfClusters(prepro, train)
 #bestNumberData(train)
 
-#train.traintestsplit(0.3)
 display = True
-#print("\n----------Début du training_GaussienNB------------\n")      
-#train.fit_GaussNB(display)
-#
+print("\n----------Début du training_GaussienNB------------\n")      
+train.fit_GaussNB(display)
+
 print("\n----------Début du training_DecisionTree----------\n")
 X, Y = prepro.XYsplit(data_encodée)
 train.load_data(X,Y)
@@ -166,11 +170,11 @@ train.DecisionTree_feature_importances(prepro.features_description)
 
 print("\n----------Début de la visualisation----------\n")
 
-#clf = train.model_DecisionTree()
-#y_pred_Decision_Tree, Y_test = train.predict_DecisionTree()
-#vizu = vizualisation.vizualisation(prepro)
-#vizu.matrice_confusion(y_pred_Decision_Tree, Y_test)
-#vizu.DecisionTree_plot(clf)
+clf = train.model_DecisionTree()
+y_pred_Decision_Tree, Y_test = train.predict_DecisionTree()
+vizu = vizualisation.vizualisation(prepro)
+vizu.matrice_confusion(y_pred_Decision_Tree, Y_test)
+vizu.DecisionTree_plot(clf)
 
 print("\n----------Début du training_RandomForestClassifier----------\n")
 train.fit_RandomForestClassifier(display)

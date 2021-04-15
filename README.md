@@ -1,3 +1,14 @@
+## Exécution du code
+
+```
+python3 main.py <fichier.csv>
+```
+
+Télécharger les fichiers ici :
+* https://www.jeromecst.com/Crimes100KEq.csv
+* https://www.jeromecst.com/Crimes1MEq.csv
+
+
 ## Carte de la densité des crimes à Chicago
 
 ![](carte_densité.png)
