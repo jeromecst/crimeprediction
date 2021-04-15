@@ -27,7 +27,7 @@ class vizualisation:
                         ha="center", va="center",
                         color="white" if self.cm[i, j] > thresh else "black")
         fig.tight_layout()
-        plt.savefig("Matrice de confusion")
+        plt.savefig("Images/Matrice de confusion")
         
         
     def DecisionTree_plot(self, clf):
@@ -36,5 +36,5 @@ class vizualisation:
                    feature_names=self.prepro.features_description,  
                    class_names=["Arrested", "Non Arrested"],
                    filled=True)
-        plt.savefig("Arbre de décision")
+        plt.savefig("Images/Arbre de décision")
         
