@@ -43,39 +43,18 @@ class vizualisation:
     def affichage_BAR_Primary_Type(self):
         Primary_Type = np.unique(self.prepro.data_panda['Primary Type'].to_numpy())
         Proportion_Primary_Type = np.empty(len(Primary_Type))
-        nb_tot = 1000000
+        nb_tot = self.prepro.data.shape[0]
         for k, prim_type in enumerate(Primary_Type):
             nb = np.sum(np.where(self.prepro.data_panda['Primary Type']==prim_type,1,0))
             Proportion_Primary_Type[k] = nb/nb_tot
 
-        A = Primary_Type[Proportion_Primary_Type>0.01]
-        B = Proportion_Primary_Type[Proportion_Primary_Type>0.01]
-        fig, ax = plt.subplots(1, 1)
-        b = ax.bar(A, B, 1.0)
+        pourcentage = .03
+        A = Primary_Type[Proportion_Primary_Type>pourcentage]
+        B = Proportion_Primary_Type[Proportion_Primary_Type>pourcentage]
+        fig, ax = plt.subplots(1, 1, figsize=(15, 10))
+        b = ax.bar(range(len(A)), B, width=.95)
         ax.bar_label(b, labels=A)
         ax.set_xlabel("Primary_Type")
         ax.set_ylabel("Proportion Primary_Type/1M")
         plt.savefig("Images/BAR_Primary_Type")
-        
-        
-        Primary_Type = np.unique(data['Primary Type'].to_numpy())
-print(Primary_Type)
-Proportion_crimes = np.empty(len(Primary_Type))
-Proportion_arrest = np.empty(len(Primary_Type))
 
-nb_tot = 1000000
-for k, prim_type in enumerate(Primary_Type):
-    
-    nb_crime = np.sum(np.where(data['Primary Type']==prim_type,1,0))
-    nb_arrest = np.sum(np.where(((data['Primary Type']==prim_type) & (data['Arrest']==1)),1,0))
-    Proportion_arrest[k] = nb_arrest/nb_crime
-    #nb_non_arrest = np.sum(np.where(data['Primary Type']==prim_type and data['Arrest']==0,1,0))
-    Proportion_crimes[k] = nb_crime/nb_tot
-    
-
-A = Primary_Type[Proportion_crimes>0.01]
-B = Proportion_crimes[Proportion_crimes>0.01]
-
-fig, ax = plt.subplots(1,2, figsize=(20,10))
-ax[0].bar(A, B, 1.0)
-ax[1].bar(Primary_Type, Proportion_arrest, 1.0)

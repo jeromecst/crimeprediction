@@ -9,7 +9,6 @@ import matplotlib.colors as colors
 
 class preprocessing:
     
-
     ## instanciation d'un objet du type de la classe.
     def __init__(self, fichierCSV, already_preprocessed=False): 
         self.km_predicts = 0
@@ -135,8 +134,9 @@ class preprocessing:
         Crée un fichier affichage_coordonnée.png des coordonnée
         s des crimes sur une carte 
         '''
-        plt.figure(1)
-        plt.scatter(self.Coordinates[:,0],self.Coordinates[:,1], s=1, marker='.')
+        fig, ax = plt.subplots(1, 1, figsize=(20, 20))
+        plt.scatter(self.Coordinates[:,0],self.Coordinates[:,1], s=.5, marker='.')
+        plt.axis('off')
         print("Création image affichage_coordonnee")
         plt.savefig("Images/affichage_coordonnee")
 
