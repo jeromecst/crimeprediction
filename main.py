@@ -131,6 +131,7 @@ def comparaison_features(train, X, Y):
     print(panda_Tree)
 
 print("\nDébut du preprocessing\n") 
+display = False
 if path.isfile(f"{file}_prepro.csv") and not ignorePreprocessedFile:
     print(f"file found, re-using {file}_prepro.csv !")
     prepro = preprocessing.preprocessing(file, already_preprocessed=True)
@@ -141,8 +142,9 @@ else:
     prepro.ajout_dates()
     prepro.Kmeans_coordinate(40)
     prepro.ajout_Kmeans_coordinate()
-    prepro.affiche_Kmeans_coordinate()
-    prepro.affiche_coordonnee()
+    if(display):
+        prepro.affiche_Kmeans_coordinate()
+        prepro.affiche_coordonnee()
     data_encodée = prepro.encodage_features()
     prepro.save_to_csv(file)
     time_after = time.time()
@@ -152,14 +154,16 @@ X, Y = prepro.XYsplit(data_encodée)
 train = train.train(X,Y)
 train.traintestsplit(0.3)
 
-#bestParamDecisionTree(train, X, Y)
-#comparaison_features(train, X, Y)
-#bestNumberOfClusters(prepro, train)
-#bestNumberData(train)
+crossvalidation=False
+if(crossvalidation):
+    bestParamDecisionTree(train, X, Y)
+    comparaison_features(train, X, Y)
+    bestNumberOfClusters(prepro, train)
+    bestNumberData(train)
+
 #X, Y = prepro.XYsplit(data_encodée)
 #train.load_data(X,Y)
 #train.traintestsplit(0.3)
-
 display = True
 print("\nDébut du training_GaussienNB\n")      
 train.fit_GaussNB(display)
@@ -168,18 +172,20 @@ print("\nDébut du training_DecisionTree\n")
 train.fit_DecisionTree(display)
 train.DecisionTree_feature_importances(prepro.features_description)
 
-print("\nDébut du training_RandomForestClassifier\n")
-train.fit_RandomForestClassifier(100, display=display) 
+#print("\nDébut du training_RandomForestClassifier\n")
+#train.fit_RandomForestClassifier(100, display=display) 
+
 
 print("\nDébut de la visualisation\n")
-
-y_pred_Decision_Tree, Y_test = train.predict_DecisionTree()
-y_pred_Gauss, Y_test = train.predict_Gauss()
+y_pred_Decision_Tree, Y_test, _ = train.predict_DecisionTree()
+y_pred_Gauss, Y_test, _ = train.predict_Gauss()
 vizu = vizualisation.vizualisation(prepro)
 vizu.matrice_confusion("MatriceConfusionDecisionTree", y_pred_Decision_Tree, Y_test)
 vizu.matrice_confusion("MatriceConfusionGauss", y_pred_Gauss, Y_test)
+if(ignorePreprocessedFile): vizu.crimeexample(prepro, train, n = 10)
+
 #vizu.affichage_BAR_Primary_Type()
 
-train.fit_DecisionTree(display=True, max_depth = 3)
-clf = train.model_DecisionTree()
-vizu.DecisionTree_plot(clf)
+#train.fit_DecisionTree(display=True, max_depth = 3)
+#clf = train.model_DecisionTree()
+#vizu.DecisionTree_plot(clf)

@@ -56,13 +56,13 @@ class train:
         return clf.score(self.X_test, self.Y_test)
 
     def predict_DecisionTree(self):
-        return self.clf.predict(self.X_test), self.Y_test
+        return self.clf.predict(self.X_test), self.Y_test, self.clf.predict_proba(self.X_test)
     
     def model_DecisionTree(self):
         return self.clf
 
     def predict_Gauss(self):
-        return self.gnb.predict(self.X_test), self.Y_test
+        return self.gnb.predict(self.X_test), self.Y_test, self.gnb.predict_proba(self.X_test)
     
     def model_Gauss(self):
         return self.gnb
