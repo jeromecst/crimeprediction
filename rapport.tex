@@ -15,7 +15,7 @@
 \usepackage{float}
 \usepackage{wrapfig}
 
-\title{\textbf{\Huge  Université Paris Saclay}\\ Rapport IAS}
+\title{\textbf{\Huge  Université Paris Saclay}\\ Prédiction d'arrestations criminelles}
 \author{Guillaume Abadie, Jérôme Coquisart, Mathis Dupont, Martin Vitani}
 \date{Année 2021}
 
@@ -30,7 +30,7 @@
     au dessus de la moyenne nationale des États-Unis.
     Les crimes dans la ville ont été collectés dès le début du 20ème siècle pour
     essayer de comprendre pourquoi la ville était sujette à autant de violence.
-    Le dataset correspond aux crimes commis entre 2001 et 2020, et contient environ 
+    Le \href{https://www.kaggle.com/n3v375/chicago-crime-from-01jan2001-to-22jul2020}{dataset} correspond aux crimes commis entre 2001 et 2020, et contient environ 
     7 millions d'entrées.
     Tous les jours, la police de Chicago alimente la base de donnée avec les
     nouveaux crimes commis dans la ville. 
@@ -45,14 +45,16 @@
 	    \begin{subfigure}{.45\textwidth}
 		    \includegraphics[scale=.2]{images/pprimarytype.png}
 		    \caption{Pourcentage de crimes en fonction de leurs type}
+		    \label{A}
 	    \end{subfigure}
 	    \begin{subfigure}{.45\textwidth}
 		    \includegraphics[scale=.2]{images/typeArrestation.png}
 		    \caption{Types de crimes avec le plus d'arrestation}
+		    \label{B}
 	    \end{subfigure}
 	    \caption{Aperçu }
     \end{figure}
-    La figure (a) nous montre que les crimes les plus représentés sont les 
+    La Figure \ref{A} nous montre que les crimes les plus représentés sont les 
     agressions (\textit{battery}), le trafic de de drogue (\textit{narcotics}) 
     et les vols (\textit{threft}).
 
@@ -60,16 +62,16 @@
 	    \centering
 	    \includegraphics[width=0.5\textwidth]{images/carte_chicago.png}
 	    \caption{Carte représentant l'ensemble des crimes commis à Chicago}
+	    \label{C}
     \end{wrapfigure}
 
-    D'après la figure (b), on voit que certains crimes sont quasiment toujours suivis 
-    d'une arrestation, c'est le cas des paris illégaux, du port d'armes caché, 
-    des crime liés à l'alcool et l'obscénité.
-    Cette même figure nous apprend qu'il y a moins de 20\% d'arrestation pour les 
-    cambriolages, le trafic d'humain, les braquages et les vols de véhicules motorisés.
-    Enfin, on voit sur la Figure 2 la carte de Chicago se dessiner, où chaque
+    D'après la Figure \ref{B}, on voit que certains crimes sont quasiment toujours suivis 
+    d'une arrestation, c'est le cas des paris illégaux, du port d'armes dissimulées, 
+    des crimes liés à l'alcool et l'obscénité.
+    Cette même Figure nous apprend qu'il y a moins de 20\% d'arrestation pour les 
+    cambriolages, le trafic d'humains, les braquages et les vols de véhicules motorisés.
+    Enfin, on voit sur la Figure \ref{C} la carte de Chicago se dessiner, où chaque
     point représente un crime.
-
 
     \section{Définition du problème}
     Notre problème sera le suivant. Il s'agira de déterminer si il y aura
@@ -85,11 +87,12 @@
     avant d'entrainer notre modèle.
     De plus, certaines features étaient uniques pour chacun de nos crimes.
 
+    On rappelle que notre dataset contient 7 millions d'entrées, on peut se permettre
+    de faire quelques changements.
     Nous avons tout d'abord supprimé les données qui contenaient des features vides,
-    et nous avons
-    équilibré le dataset.
+    et nous avons équilibré le dataset en mettant autant de crimes avec arrestations 
+    que de crimes sans arrestation.
     Cela a été fait avec des commandes shell pour la rapidité et la simplicité. 
-    On rappelle que notre dataset contient 7 millions d'entrées à la base.
     Voici les commandes effectuées.
 
     \begin{Verbatim}
@@ -98,9 +101,9 @@
     
     ## Equilibrer les données
     # Ici on sépares à l'aide d'expressions régulières les arrested et les non arrested
-    grep -E '^(([^,]*,)|("[^"]*",)){8}false' Crimes100K.csv > CrimesCleanNonArrested.csv
-    grep -E '^(([^,]*,)|("[^"]*",)){8}true' Crimes100K.csv > CrimesCleanArrested.csv
-    
+    grep -E '^(([^,]*,)|("[^"]*",)){8}false' CrimesClean.csv > CrimesCleanNonArrested.csv
+    grep -E '^(([^,]*,)|("[^"]*",)){8}true' CrimesClean.csv > CrimesCleanArrested.csv
+ 
     # Ici on recombine en n'oubliant pas le header contenant le nom des features
     head -n 1 CrimesClean.csv > CrimesEq.csv
     n=$(wc -l CrimesCleanArrested.csv | grep -E -o '[0-9]+ ')
@@ -113,9 +116,11 @@
 	    \centering
 	    \includegraphics[width=0.5\textwidth]{images/carte_densité.png}
 	    \caption{Clusters des crimes de Chicago}
+	    \label{E}
     \end{wrapfigure}
-    Ensuite, en python, nous avons supprimé les features uniques et
-    celles qui se répétaient
+    Ici le fichier CrimesEq.csv contient 3,4 millions de crimes, on ne va pas travailler avec 
+    autant de données et se limiter 1 million.
+    L'étape suivante et été de supprimer les features uniques et celles qui se répétaient:
     \begin{itemize}
 	    \item ID
 	    \item Case Number
@@ -136,7 +141,7 @@
     Enfin, à partir des coordonnées géographiques, nous avons appliqué un algorithme
     de k-moyennes pour séparer les zones de Chicago et en déduire une nouvelle
     feature \textit{Cluster}. 
-    Voici ce que l'on obtiens lorsque l'on affiche la localisation des crimes en
+    Voici ce que l'on obtient (Figure \ref{E}) lorsque l'on affiche la localisation des crimes en
     fonction de leurs clusters.
     Sur cette dernière carte, les clusters plus rouges concentrent le plus de crimes.
 
@@ -160,11 +165,10 @@
     Les hyper-paramètres qui ont été testés sont le \textit{min\_sample\_split}, le \textit{min\_sample\_leaf},
     le \textit{max\_features}, le \textit{min\_impurity\_decrease}, le nombre de clusters et le 
     nombre de données.
-    On obtient respectivement 130, 60, max et 0 pour les paramètres du DecisionTree. On a donc sélectionné 60 clusters
-    géographiques et on travaille avec 1M de données.
 
-    Nous avons également essayé d'utiliser un RandomForestClassifier. Le score était substantiellement
-    identique au DecsionTree, mais avec un temps de calcul deux à trois fois supérieur.
+    Nous avons également essayé d'utiliser un RandomForestClassifier. 
+    Le score était substantiellement identique au DecsionTree, mais avec un temps de 
+    calcul deux à trois fois supérieur.
 
     \section{Comparaison des modèles}
 
@@ -174,7 +178,7 @@
     Pour chaque features, il essaye de répondre à des questions sur celles-ci afin
     de les séparer en différentes catégorie:
     Le crime a-t-il eu lieu sur la place publique ou dans un appartement?
-    (on peut voir sur la Figure 5 que \textit{location description} est une feature
+    (on peut voir sur la Figure \ref{D} que \textit{location description} est une feature
     importante à la décision, car la question posée sur cette feature est pertinente).
     L'arbre de décision que nous avons obtenue est vraiment grand, car beaucoup de
     features, mais nous avons créé un DecisionTree avec une partie restreinte de
@@ -182,8 +186,14 @@
 
     \begin{figure}[H]
             \centering
+	    \includegraphics[scale=.18]{images/treeExample.png}
+	    \caption{Exemple d'un DecistionTree}
+    \end{figure}
+    \begin{figure}[H]
+            \centering
 	    \includegraphics[scale=.3]{images/feature_importance.png}
 	    \caption{Importance des features pour le DecisionTree}
+	    \label{D}
     \end{figure}
 
 
@@ -191,7 +201,7 @@
     (Estimateur du Maximum de Vraisemblance).
     Le but est simple, maximiser la vraisemblance. 
     Cependant une hypothèse importante de ce modèle est l'indépendance de chaque données,
-    ce qui n'est pas du tout notre cas dans ce projet.
+    ce que l'on ne peut pas garantir dans le cadre de notre projet.
     Ainsi, on peut prévoir une score moyen pour ce modèle avec nos données.
 
     Comme nous avons beaucoup de données (1M pour les calculs des scores),
@@ -213,9 +223,11 @@
 	    \end{subfigure}
     \end{figure}
 
-    Voici les matrices de confusion générée pour le DecisionTree et le modèle Bayésien Naïf,
-    entrainés sur nos 1 millions de données. On peut voir que ces deux modèles arrivent 
-    mieux à valider le fait qu'il y ait arrestation que le fait qu'il n'y ait pas d'arrestation.
+    Voici les matrices de confusion générée pour le DecisionTree et le modèle 
+    Bayésien Naïf, entrainés sur nos 1 millions de données. 
+    On peut voir que ces deux modèles arrivent 
+    mieux à valider le fait qu'il y ait arrestation que le fait qu'il n'y ait 
+    pas d'arrestation.
 
     Après optimisation des paramètres, les scores obtenus pour nos deux modèles sont:
     \begin{Verbatim}
@@ -226,6 +238,17 @@
     La comparaison des modèles nous a donné raison, l'arbre de décision nous donne
     un meilleur score que le bayésien naïf.
 
+    Voici quelques exemples concrets de nos prédictions, sur l'ensemble de test.
+    \begin{figure}[H]
+	    \centering
+	    \includegraphics[scale=.4]{images/results.png}
+	    \caption{Exemples de prédictions avec les pourcentages}
+    \end{figure}
+
+
     \section{Conclusion}
+    Dans ce projet, nous avons pu comparer différents modèles de classification.
+    Nous obtenons un score très correct, nous pouvons prédire à plus de 80\% si pour 
+    un crime donné, il y aura une arrestation ou non.
 
 \end{document}
