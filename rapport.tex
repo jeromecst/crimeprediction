@@ -13,6 +13,7 @@
 \usepackage{hyperref}
 \usepackage{csvsimple}
 \usepackage{float}
+\usepackage{wrapfig}
 
 \title{\textbf{\Huge  Université Paris Saclay}\\ Rapport IAS}
 \author{Guillaume Abadie, Jérôme Coquisart, Mathis Dupont, Martin Vitani}
@@ -21,9 +22,8 @@
 
 \begin{document}
     \maketitle
-    \vspace{100px}
+    %\vspace{100px}
     \tableofcontents
-    \newpage
 
     \section{Introduction au problème}
     La ville de Chicago a un ratio de crimes, surtout sur les crimes violents,
@@ -34,23 +34,42 @@
     7 millions d'entrées.
     Tous les jours, la police de Chicago alimente la base de donnée avec les
     nouveaux crimes commis dans la ville. 
-    Seuls les meurtres ne sont pas comptabilisé dans la base de donnée.
+    Parmi les données collectées, on retrouve: 
+    cambriolages, agressions, homicides, vols, braquages, intimidations, kidnapping, 
+    possession d'arme\dots.
+    Seuls les meurtres ne sont pas comptabilisés dans la base de donnée.
 
     \section{Aperçu du dataset}
     \begin{figure}[H]
 	    \centering
 	    \begin{subfigure}{.45\textwidth}
-		    \includegraphics[scale=.2]{Images/typeArrestation.png}
-		    \caption{Types de crimes avec le plus d'arrestation}
-	    \end{subfigure}
-	    \begin{subfigure}{.45\textwidth}
-		    \includegraphics[scale=.2]{Images/pprimarytype.png}
+		    \includegraphics[scale=.2]{images/pprimarytype.png}
 		    \caption{Pourcentage de crimes en fonction de leurs type}
 	    \end{subfigure}
-	    \includegraphics[scale=.2]{Images/carte_chicago.png}
-	    \caption{Carte représentant l'ensemble des crimes commis à Chicago}
+	    \begin{subfigure}{.45\textwidth}
+		    \includegraphics[scale=.2]{images/typeArrestation.png}
+		    \caption{Types de crimes avec le plus d'arrestation}
+	    \end{subfigure}
+	    \caption{Aperçu }
     \end{figure}
-    Sur cette carte, chaque point représente un crime.
+    La figure (a) nous montre que les crimes les plus représentés sont les 
+    agressions (\textit{battery}), le trafic de de drogue (\textit{narcotics}) 
+    et les vols (\textit{threft}).
+
+    \begin{wrapfigure}{r}{0.5\textwidth}
+	    \centering
+	    \includegraphics[width=0.5\textwidth]{images/carte_chicago.png}
+	    \caption{Carte représentant l'ensemble des crimes commis à Chicago}
+    \end{wrapfigure}
+
+    D'après la figure (b), on voit que certains crimes sont quasiment toujours suivis 
+    d'une arrestation, c'est le cas des paris illégaux, du port d'armes caché, 
+    des crime liés à l'alcool et l'obscénité.
+    Cette même figure nous apprend qu'il y a moins de 20\% d'arrestation pour les 
+    cambriolages, le trafic d'humain, les braquages et les vols de véhicules motorisés.
+    Enfin, on voit sur la Figure 2 la carte de Chicago se dessiner, où chaque
+    point représente un crime.
+
 
     \section{Définition du problème}
     Notre problème sera le suivant. Il s'agira de déterminer si il y aura
@@ -66,7 +85,7 @@
     avant d'entrainer notre modèle.
     De plus, certaines features étaient uniques pour chacun de nos crimes.
 
-    Nous avons tout d'abord supprimer les données qui contenaient des features vides,
+    Nous avons tout d'abord supprimé les données qui contenaient des features vides,
     et nous avons
     équilibré le dataset.
     Cela a été fait avec des commandes shell pour la rapidité et la simplicité. 
@@ -90,6 +109,11 @@
     shuf tmp.csv >> CrimesEq.csv
     \end{Verbatim}
 
+    \begin{wrapfigure}{r}{0.5\textwidth}
+	    \centering
+	    \includegraphics[width=0.5\textwidth]{images/carte_densité.png}
+	    \caption{Clusters des crimes de Chicago}
+    \end{wrapfigure}
     Ensuite, en python, nous avons supprimé les features uniques et
     celles qui se répétaient
     \begin{itemize}
@@ -114,11 +138,6 @@
     feature \textit{Cluster}. 
     Voici ce que l'on obtiens lorsque l'on affiche la localisation des crimes en
     fonction de leurs clusters.
-    \begin{figure}[H]
-    \centering
-	    \includegraphics[scale=.2]{Images/carte_densité.png}
-	    \caption{Clusters des crimes de Chicago}
-    \end{figure}
     Sur cette dernière carte, les clusters plus rouges concentrent le plus de crimes.
 
     \section{Choix d'algorithme}
@@ -128,29 +147,45 @@
     Différentes fonctions dans le fichier main.py nous ont permis de déterminer
     les meilleurs hyper-paramètres à choisir pour le DecisionTree.
     \begin{figure}[H]
-            \centering
-	    \includegraphics[scale=.4]{bestParamDecisionTree.png}
-	    \caption{Cross-validation pour le DecisionTree}
+	    \centering
+	    \begin{subfigure}{.45\textwidth}
+		    \includegraphics[scale=.2]{images/bestParamDecisionTree.png}
+		    \caption{Cross-validation pour le DecisionTree}
+	    \end{subfigure}
+	    \begin{subfigure}{.45\textwidth}
+		    \includegraphics[scale=.3]{images/bestNumClusters.png}
+		    \caption{Choix du meilleur nombre de clusters}
+	    \end{subfigure}
     \end{figure}
+    Les hyper-paramètres qui ont été testés sont le \textit{min\_sample\_split}, le \textit{min\_sample\_leaf},
+    le \textit{max\_features}, le \textit{min\_impurity\_decrease}, le nombre de clusters et le 
+    nombre de données.
+    On obtient respectivement 130, 60, max et 0 pour les paramètres du DecisionTree. On a donc sélectionné 60 clusters
+    géographiques et on travaille avec 1M de données.
+
+    Nous avons également essayé d'utiliser un RandomForestClassifier. Le score était substantiellement
+    identique au DecsionTree, mais avec un temps de calcul deux à trois fois supérieur.
 
     \section{Comparaison des modèles}
+
+    L'arbre de décision est un algorithme de classification qui nous aide 
+    à prendre des décision:
+    selon le type de crime, selon le lieu, le moment etc., y a-t-il eu arrestation ou pas?
+    Pour chaque features, il essaye de répondre à des questions sur celles-ci afin
+    de les séparer en différentes catégorie:
+    Le crime a-t-il eu lieu sur la place publique ou dans un appartement?
+    (on peut voir sur la Figure 5 que \textit{location description} est une feature
+    importante à la décision, car la question posée sur cette feature est pertinente).
+    L'arbre de décision que nous avons obtenue est vraiment grand, car beaucoup de
+    features, mais nous avons créé un DecisionTree avec une partie restreinte de
+    nos features afin de pouvoir le regarder: %TODO
+
     \begin{figure}[H]
             \centering
-	    \includegraphics[scale=.35]{Images/feature_importance.png}
+	    \includegraphics[scale=.3]{images/feature_importance.png}
 	    \caption{Importance des features pour le DecisionTree}
     \end{figure}
 
-    L'arbre de décision est un algorithme de classification qui nous aide 
-    à prendre des décision :
-    selon le type de crime, selon le lieu, le moment etc., y a-t-il eu arrestation ou pas?
-    Pour chaque features, il essaye de répondre à des questions sur celles-ci afin
-    de les séparer en différentes catégorie : 
-    Le crime a-t-il eu lieu sur la place publique ou dans un appartement?
-    (on peut voir sur la figure 4 que \textit{location description} est une feature
-    importante à la décision, car la question posée sur cette feature est pertinente).
-    L'arbre de décision que nous avons obtenue est vraiment grand, car beaucoup de
-    features, "mais nous avons crée un DecisionTree avec une partie restreinte de
-    nos features afin de pouvoir le regarder : ??"
 
     Le modèle bayésien naïf est un modèle basé sur l'EMV
     (Estimateur du Maximum de Vraisemblance).
@@ -166,16 +201,23 @@
     \section{Présentation des résultats}
 
     \begin{figure}[H]
-            \centering
-	    \includegraphics[scale=.35]{Images/Matrice de confusion.png}
-	    \caption{Matrice de confusion du DecisionTree}
+	    \begin{subfigure}{.45\textwidth}
+		    \includegraphics[scale=.314]{images/MatriceConfusionDecisionTree.png}
+		    \centering
+		    \caption{Matrice de confusion du DecisionTree}
+	    \end{subfigure}
+	    \begin{subfigure}{.45\textwidth}
+		    \centering
+		    \includegraphics[scale=.35]{images/MatriceConfusionGauss.png}
+		    \caption{Matrice de confusion du Bayésien Naïf}
+	    \end{subfigure}
     \end{figure}
 
-    Voici la matrice de confusion générée à partir de l'arbre décision, entrainé sur
-    nos 1 millions de données. On peut voir que notre modèle arrive mieux à valider
-    le fait qu'il y ai arrestation que le fait qu'il n'y ai pas d'arrestation.
+    Voici les matrices de confusion générée pour le DecisionTree et le modèle Bayésien Naïf,
+    entrainés sur nos 1 millions de données. On peut voir que ces deux modèles arrivent 
+    mieux à valider le fait qu'il y ait arrestation que le fait qu'il n'y ait pas d'arrestation.
 
-    Les scores obtenues pour nos deux modèles sont :
+    Après optimisation des paramètres, les scores obtenus pour nos deux modèles sont:
     \begin{Verbatim}
     Score GaussNB :  0.703753
     Score DecisionTree :  0.82345

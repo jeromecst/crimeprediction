@@ -42,7 +42,7 @@ def bestNumberOfClusters(prepro, train, n = 12):
     ax.set_xlabel("clusters")
     ax.set_ylabel("score")
     ax.set_title("best number of clusters")
-    plt.savefig("Images/bestNumClusters")
+    plt.savefig("images/bestNumClusters")
 
 
 def bestParamDecisionTree(train, X, Y):
@@ -83,14 +83,14 @@ def bestParamDecisionTree(train, X, Y):
     ax[1][1].set_xlabel("min_impurity_decrease")
     ax[1][1].set_ylabel("score")
 
-    plt.savefig("Images/bestParamDecisionTree")
+    plt.savefig("images/bestParamDecisionTree")
 
 def bestNumberData(train):
     X, Y = prepro.XYsplit(data_encodée)
     score = []
     N = X.shape[0]
     fig, ax = plt.subplots(1, 1, figsize=(12, 8))
-    the_range = np.linspace(N, 3*N/4, 20, dtype=int)
+    the_range = np.linspace(N, 1000, 20, dtype=int)
     for n in the_range:
         Xsub = X[:int(n)].copy()
         Ysub = Y[:int(n)].copy()
@@ -101,7 +101,7 @@ def bestNumberData(train):
     ax.set_xlabel("Dataset size")
     ax.set_ylabel("Score")
     ax.legend()
-    plt.savefig("Images/bestNumberData")
+    plt.savefig("images/bestNumberData")
 
 def affichage_encodage():
     for i in range(len(prepro.features_description)):
@@ -127,11 +127,10 @@ def comparaison_features(train, X, Y):
         
     panda_Gauss = pd.DataFrame(compar_date_lieu_Gauss, columns=lieux, index=dates)
     print(panda_Gauss)
-    print("\n-------------------------------\n")
     panda_Tree = pd.DataFrame(compar_date_lieu_Tree, columns=lieux, index=dates)
     print(panda_Tree)
 
-print("\n----------------------Début du preprocessing-----------------------\n") 
+print("\nDébut du preprocessing\n") 
 if path.isfile(f"{file}_prepro.csv") and not ignorePreprocessedFile:
     print(f"file found, re-using {file}_prepro.csv !")
     prepro = preprocessing.preprocessing(file, already_preprocessed=True)
@@ -143,6 +142,7 @@ else:
     prepro.Kmeans_coordinate(40)
     prepro.ajout_Kmeans_coordinate()
     prepro.affiche_Kmeans_coordinate()
+    prepro.affiche_coordonnee()
     data_encodée = prepro.encodage_features()
     prepro.save_to_csv(file)
     time_after = time.time()
@@ -156,27 +156,30 @@ train.traintestsplit(0.3)
 #comparaison_features(train, X, Y)
 #bestNumberOfClusters(prepro, train)
 #bestNumberData(train)
+#X, Y = prepro.XYsplit(data_encodée)
+#train.load_data(X,Y)
+#train.traintestsplit(0.3)
 
 display = True
-print("\n----------Début du training_GaussienNB------------\n")      
+print("\nDébut du training_GaussienNB\n")      
 train.fit_GaussNB(display)
 
-print("\n----------Début du training_DecisionTree----------\n")
-X, Y = prepro.XYsplit(data_encodée)
-train.load_data(X,Y)
-train.traintestsplit(0.3)
+print("\nDébut du training_DecisionTree\n")
 train.fit_DecisionTree(display)
-#train.DecisionTree_feature_importances(prepro.features_description)
+train.DecisionTree_feature_importances(prepro.features_description)
 
+print("\nDébut du training_RandomForestClassifier\n")
+train.fit_RandomForestClassifier(100, display=display) 
 
-'''print("\n----------Début du training_RandomForestClassifier----------\n")
-train.fit_RandomForestClassifier(display)
-'''
-print("\n----------Début de la visualisation----------\n")
+print("\nDébut de la visualisation\n")
 
-clf = train.model_DecisionTree()
 y_pred_Decision_Tree, Y_test = train.predict_DecisionTree()
+y_pred_Gauss, Y_test = train.predict_Gauss()
 vizu = vizualisation.vizualisation(prepro)
-vizu.matrice_confusion(y_pred_Decision_Tree, Y_test)
-vizu.affichage_BAR_Primary_Type()
-#vizu.DecisionTree_plot(clf)
+vizu.matrice_confusion("MatriceConfusionDecisionTree", y_pred_Decision_Tree, Y_test)
+vizu.matrice_confusion("MatriceConfusionGauss", y_pred_Gauss, Y_test)
+#vizu.affichage_BAR_Primary_Type()
+
+train.fit_DecisionTree(display=True, max_depth = 3)
+clf = train.model_DecisionTree()
+vizu.DecisionTree_plot(clf)

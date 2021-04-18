@@ -138,7 +138,7 @@ class preprocessing:
         plt.scatter(self.Coordinates[:,0],self.Coordinates[:,1], s=.5, marker='.')
         plt.axis('off')
         print("Création image affichage_coordonnee")
-        plt.savefig("Images/affichage_coordonnee")
+        plt.savefig("images/affichage_coordonnee")
 
     def affiche_Kmeans_coordinate(self):
         '''
@@ -168,7 +168,7 @@ class preprocessing:
         plt.axis('off')
         ax.set_title("Carte des crimes à Chicago")
         print("sauvegarde du fichier affichage_Kmoyenne")
-        plt.savefig('Images/affichage_Kmoyenne')
+        plt.savefig('images/affichage_Kmoyenne')
 
     
     def remove_Kmeans_coordinate(self):
