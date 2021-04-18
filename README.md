@@ -8,20 +8,38 @@ Télécharger les fichiers ici :
 * https://www.jeromecst.com/Crimes100KEq.csv
 * https://www.jeromecst.com/Crimes1MEq.csv
 
-
 ## Carte de la densité des crimes à Chicago
 
-![](carte_densité.png)
+![](Images/carte_densité.png)
+
+## Répartition des crimes
+
+![](Images/carte_chicago.png)
 
 ## Importance des features
 
-![](feature_importance.png)
+![](Images/feature_importance.png)
 
 ## Meilleurs paramètres pour le DecisionTree
 
-![](bestParamDecisionTree.png)
+![](Images/bestParamDecisionTree.png)
 
 ## Meilleur nombre de clusters
 
-![](bestNumClusters.png)
+![](Images/bestNumClusters.png)
 
+## Meilleur nombre de données
+
+![](Images/bestNumberData.png)
+
+## Matrice de confusion
+
+![](Images/Matrice\ de\ confusion.png)
+
+## Pourcentage d'arrestation selon le type de crime
+
+![](Images/NombreArrestationParCrime.png)
+
+## Fréquence des crimes en fonction leur type
+
+![](Images/PourcentagePrimaryTypes.png)
