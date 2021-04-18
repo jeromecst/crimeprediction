@@ -24,24 +24,31 @@ class train:
         self.N = X.shape[0]
         self.D = X.shape[1]
         self.clf = 0
+        self.gnb = 0
 
     def traintestsplit(self, test_ratio=.3):
         self.X_train, self.X_test, self.Y_train, self.Y_test = \
-                sklearn.model_selection.train_test_split(self.X, self.Y, test_size=test_ratio)
+                sklearn.model_selection.train_test_split(self.X, self.Y,\
+                test_size=test_ratio)
 
     def fit_GaussNB(self, display=False):
         '''
         Entraînement de notre modèle
         '''
         gnb = GaussianNB()
-        gnb.fit(self.X_train, self.Y_train)
+        gnb = gnb.fit(self.X_train, self.Y_train)
         if(display):
             print("Score GaussNB : ", gnb.score(self.X_test, self.Y_test))
+        self.gnb = gnb
         return gnb.score(self.X_test, self.Y_test)
 
         
-    def fit_DecisionTree(self, display=False, min_samples_split = 130, min_samples_leaf = 60, max_features = None, min_impurity_decrease = 0.0):
-        clf = tree.DecisionTreeClassifier(min_samples_split = min_samples_split, min_samples_leaf = min_samples_leaf, max_features = max_features, min_impurity_decrease = min_impurity_decrease)
+    def fit_DecisionTree(self, display=False, min_samples_split = 130,\
+            min_samples_leaf = 60, max_features = None, min_impurity_decrease = 0.0,\
+            max_depth= None):
+        clf = tree.DecisionTreeClassifier(min_samples_split = min_samples_split,\
+                min_samples_leaf = min_samples_leaf, max_features = max_features,\
+                min_impurity_decrease = min_impurity_decrease, max_depth = max_depth)
         clf = clf.fit(self.X_train, self.Y_train)
         if(display):
             print("Score DecisionTree : ", clf.score(self.X_test, self.Y_test))
@@ -53,6 +60,12 @@ class train:
     
     def model_DecisionTree(self):
         return self.clf
+
+    def predict_Gauss(self):
+        return self.gnb.predict(self.X_test), self.Y_test
+    
+    def model_Gauss(self):
+        return self.gnb
     
     def DecisionTree_feature_importances(self, feature_description):
         fig, ax = plt.subplots(1, 1, figsize=(20,10))
@@ -61,11 +74,11 @@ class train:
         ax.bar_label(b, labels=feature_description)
         ax.set_xlabel("feature description")
         ax.set_ylabel("feature importance")
-        plt.savefig("feature_importance")
+        plt.savefig("images/feature_importance")
 
 
-    def fit_RandomForestClassifier(self, display=False, min_samples_split = 130, min_samples_leaf = 60, max_features = None, min_impurity_decrease = 0.0):
-        rfc = RandomForestClassifier(n_jobs = 4, n_estimators = 100, min_samples_split = min_samples_split, min_samples_leaf = min_samples_leaf, max_features = max_features, min_impurity_decrease = min_impurity_decrease)
+    def fit_RandomForestClassifier(self, n_estimators = 100, display=False):
+        rfc = RandomForestClassifier(n_jobs = -1, n_estimators = n_estimators)
         rfc  = rfc.fit(self.X_train, self.Y_train)
         if(display):
             print("Score RandomForestClassifier : ", rfc.score(self.X_test, self.Y_test))
