@@ -1,8 +1,10 @@
 ## Exécution du code
 
 ```
-python3 main.py <fichier.csv>
+python3 main.py fichier.csv [reload]
 ```
+* fichier.csv correspond au dataset au format csv
+* reload est une option facultative pour regénérer le preprocessing (se fait automatiquement si le fichier preprocessé n'est pas trouvé)
 
 Télécharger les fichiers ici :
 * https://www.jeromecst.com/Crimes100KEq.csv
@@ -34,12 +36,12 @@ Télécharger les fichiers ici :
 
 ## Matrice de confusion
 
-![](images/Matrice\ de\ confusion.png)
+![](images/MatriceConfusionDecisionTree.png)
 
 ## Pourcentage d'arrestation selon le type de crime
 
-![](images/NombreArrestationParCrime.png)
+![](images/typeArrestation.png)
 
 ## Fréquence des crimes en fonction leur type
 
-![](images/PourcentagePrimaryTypes.png)
+![](images/pprimarytype.png)
