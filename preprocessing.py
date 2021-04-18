@@ -61,28 +61,27 @@ class preprocessing:
         '''
         date = self.data_panda['Date']
         size = self.data.shape[0]
-        date1, date2, date3, date4, date5 = np.zeros(size, dtype=int), np.zeros(size, dtype=int),\
-                np.zeros(size, dtype=int), np.zeros(size, dtype=int), np.zeros(size, dtype=int)
+        date1, date2, date3, date4, date5 = [None]*size,[None]*size,[None]*size,[None]*size,[None]*size
         for i, k in enumerate(date):
             heure = int(k[11:13]) + (k[-2:]=="PM")*12
-            if(heure>=1 and heure<5):
-                date1[i]=0
+            if(heure>=2 and heure<6):
+                date1[i]="night"
             elif(heure>=5 and heure<7):
-                date1[i]=1
+                date1[i]="early morning"
             elif(heure>=7 and heure<10):
-                date1[i]=2
+                date1[i]="morning"
             elif(heure>=10 and heure<12):
-                date1[i]=3
+                date1[i]="late morning"
             elif(heure>=12 and heure<16):
-                date1[i]=4
+                date1[i]="early afternoon"
             elif(heure>=16 and heure<18):
-                date1[i]=5
+                date1[i]="late afternoon"
             elif(heure>=18 and heure<21):
-                date1[i]=6
+                date1[i]="evening"
             elif(heure>=21 and heure<23):
-                date1[i]=7
+                date1[i]="late evening"
             else:
-                date1[i]=8
+                date1[i]="midnight"
 
             jour = k[3:5]
             mois = k[0:2]
@@ -91,9 +90,9 @@ class preprocessing:
             # 0 lundi - 6 dimanche
             date2[i] = datetime.fromisoformat(f'{annee}-{mois}-{jour}').weekday()
 
-            date3[i] = (date2[i]>4)# 0 semaine - 1 week-end
+            date3[i] = "week-end" if (date2[i]>4) else "week"# 0 semaine - 1 week-end
 
-            date4[i] = int(mois)
+            date4[i] = mois
 
             date5[i] = heure
 

@@ -1,4 +1,5 @@
 import numpy as np
+import numpy.random as rd
 import sklearn
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
@@ -68,3 +69,26 @@ class vizualisation:
         ax.set_ylabel("Proportion Primary_Type/nb_donnees")
         plt.savefig("images/NombreArrestationParCrime")
 
+
+    def crimeexample(self, prepro, train, n = 10):
+        train.traintestsplit(0.3)
+        encodage = prepro.encodage
+        ids = np.array(rd.rand(n)*train.X_test.shape[0], dtype=int)
+        train.fit_DecisionTree(display=False)
+        pred, test, proba = train.predict_DecisionTree()
+
+        print(prepro.features_description)
+        print()
+        for i in ids:
+            s = "\033[0;32mbien\033[0m" if pred[i] == test[i] else "\033[0;31mmal\033[0m"
+            pc = proba[i][1] 
+            q = "arrestation" if(pc > .5) else "pas d'arrestation"
+            pc = max(pc, 1-pc)
+            ptype = prepro.encodage[1][train.X_test[i, 1]]
+            desc = prepro.encodage[2][train.X_test[i, 2]]
+            part = prepro.encodage[10][train.X_test[i, 10]]
+            ldesc = prepro.encodage[3][train.X_test[i, 3]]
+            #month = prepro.encodage[14][train.X_test[i, 14]]
+            year = prepro.encodage[11][train.X_test[i, 11]]
+            print(f"Le crime \033[0;34m{ptype}: {desc} à {part}h {year} dans {ldesc}\033[0m\n est {s} classé: {100*pc:.0f}% {q}")
+        print()
