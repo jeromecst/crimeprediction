@@ -32,12 +32,12 @@
     essayer de comprendre pourquoi la ville était sujette à autant de violence.
     Le \href{https://www.kaggle.com/n3v375/chicago-crime-from-01jan2001-to-22jul2020}{dataset} correspond aux crimes commis entre 2001 et 2020, et contient environ 
     7 millions d'entrées.
-    Tous les jours, la police de Chicago alimente la base de donnée avec les
+    Tous les jours, la police de Chicago alimente la base de données avec les
     nouveaux crimes commis dans la ville. 
     Parmi les données collectées, on retrouve: 
     cambriolages, agressions, homicides, vols, braquages, intimidations, kidnapping, 
     possession d'arme\dots.
-    Seuls les meurtres ne sont pas comptabilisés dans la base de donnée.
+    Seuls les meurtres ne sont pas comptabilisés dans la base de données.
 
     \section{Aperçu du dataset}
     \begin{figure}[H]
@@ -84,14 +84,13 @@
     \section{Préprocessing}
     Comme le dataset contenait peu de features, 
     nous avons effectué plusieurs modifications sur le dataset 
-    avant d'entrainer notre modèle.
+    avant d'entraîner notre modèle.
     De plus, certaines features étaient uniques pour chacun de nos crimes.
 
     On rappelle que notre dataset contient 7 millions d'entrées, on peut se permettre
     de faire quelques changements.
     Nous avons tout d'abord supprimé les données qui contenaient des features vides,
-    et nous avons équilibré le dataset en mettant autant de crimes avec arrestations 
-    que de crimes sans arrestation.
+    et nous avons équilibré le dataset en mettant autant de crimes avec arrestation que de crimes sans arrestation.
     Cela a été fait avec des commandes shell pour la rapidité et la simplicité. 
     Voici les commandes effectuées.
 
@@ -120,7 +119,7 @@
     \end{wrapfigure}
     Ici le fichier CrimesEq.csv contient 3,4 millions de crimes, on ne va pas travailler avec 
     autant de données et se limiter 1 million.
-    L'étape suivante et été de supprimer les features uniques et celles qui se répétaient:
+    L'étape suivante a été de supprimer les features uniques et celles qui se répétaient:
     \begin{itemize}
 	    \item ID
 	    \item Case Number
@@ -167,22 +166,24 @@
     nombre de données.
 
     Nous avons également essayé d'utiliser un RandomForestClassifier. 
-    Le score était substantiellement identique au DecsionTree, mais avec un temps de 
-    calcul deux à trois fois supérieur.
+    Le score était substantiellement identique au DecsionTree, mais avec un 
+    temps de calcul deux à trois fois supérieur. On pense que c'est du au
+    fait que avons déjà beaucoup de données sur lesquelles nous entraîner, 
+    et que le RandomForest serait plus adapté pour un dataset plus restreint.
 
     \section{Comparaison des modèles}
 
     L'arbre de décision est un algorithme de classification qui nous aide 
-    à prendre des décision:
-    selon le type de crime, selon le lieu, le moment etc., y a-t-il eu arrestation ou pas?
-    Pour chaque features, il essaye de répondre à des questions sur celles-ci afin
-    de les séparer en différentes catégorie:
+    à prendre des décisions:
+    selon le type de crime, selon le lieu, le moment etc., y a-t-il eu 
+    arrestation ou pas?  Pour chaque feature, il essaye de répondre à des  
+    questions sur celles-ci afin de les séparer en différentes catégories:
     Le crime a-t-il eu lieu sur la place publique ou dans un appartement?
     (on peut voir sur la Figure \ref{D} que \textit{location description} est une feature
     importante à la décision, car la question posée sur cette feature est pertinente).
-    L'arbre de décision que nous avons obtenue est vraiment grand, car beaucoup de
+    L'arbre de décision que nous avons obtenu est vraiment grand, car beaucoup de
     features, mais nous avons créé un DecisionTree avec une partie restreinte de
-    nos features afin de pouvoir le regarder: %TODO
+    nos features afin de pouvoir le visualiser:
 
     \begin{figure}[H]
             \centering
@@ -200,12 +201,12 @@
     Le modèle bayésien naïf est un modèle basé sur l'EMV
     (Estimateur du Maximum de Vraisemblance).
     Le but est simple, maximiser la vraisemblance. 
-    Cependant une hypothèse importante de ce modèle est l'indépendance de chaque données,
+    Cependant une hypothèse importante de ce modèle est l'indépendance de chaque donnée,
     ce que l'on ne peut pas garantir dans le cadre de notre projet.
     Ainsi, on peut prévoir une score moyen pour ce modèle avec nos données.
 
     Comme nous avons beaucoup de données (1M pour les calculs des scores),
-    le bayésien naïf va avoir du mal, alors que cela ne pas changer grand
+    le bayésien naïf va avoir du mal, alors que cela ne change pas grand
     chose pour le DecisionTree.
 
     \section{Présentation des résultats}
@@ -223,7 +224,7 @@
 	    \end{subfigure}
     \end{figure}
 
-    Voici les matrices de confusion générée pour le DecisionTree et le modèle 
+    Voici les matrices de confusion générées pour le DecisionTree et le modèle 
     Bayésien Naïf, entrainés sur nos 1 millions de données. 
     On peut voir que ces deux modèles arrivent 
     mieux à valider le fait qu'il y ait arrestation que le fait qu'il n'y ait 
@@ -247,8 +248,26 @@
 
 
     \section{Conclusion}
-    Dans ce projet, nous avons pu comparer différents modèles de classification.
-    Nous obtenons un score très correct, nous pouvons prédire à plus de 80\% si pour 
-    un crime donné, il y aura une arrestation ou non.
+    Dans ce projet, nous avons pu comparer différents modèles de
+    classification. 
+    Ce qui nous a particulièrement plu, c'était de travailler sur le dataset
+    avant d'entraîner le modèle. En effet, nos données contenaient peu de
+    features et n'étaient pas très bien équilibrée.
+    Néanmoins, nous obtenons un score très correct, nous pouvons prédire à
+    plus de 80\% si pour un crime donné, il y aura une arrestation ou non.
+
+    Pour aller plus loin, il aurait été intéressant d'ajouter des features
+    externes au dataset, telles que des données météorologiques, des
+    évènements sociaux ou politique. Cela nous aurait demandé de créer un
+    nouveau dataset, mais il aurait été très intéressant de voir à quel 
+    point on peut augmenter notre score de cette manière.
+
+    Enfin, notre modèle a quelques limites. Tous les crimes du dataset sont
+    relevés par la police de Chicago. Donc certains de ces crimes sont
+    forcements suivis d'une arrestation. C'est par exemple le cas de la
+    détention de drogue, qui est un crime flagrant.
+    De plus, on peut facilement imaginer que l'ensemble des crimes commis
+    dans la ville ne sont pas répertoriés. Le dataset est donc biaisé sur ce
+    point.
 
 \end{document}
