@@ -61,7 +61,7 @@ class vizualisation:
         b1 = ax[1].bar(range(len(Primary_Type)), Proportion_arrest, width=.95)
         ax[1].bar_label(b1, labels=A)
         ax[1].set_xlabel("Primary_Type")
-        ax[1].set_ylabel("Proportion Primary_Type/nb_donnees")
+        ax[1].set_ylabel("Proportion arrest/crimes")
         
         plt.savefig("Images/BAR_Primary_Type")
 
