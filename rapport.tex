@@ -35,8 +35,8 @@
     Tous les jours, la police de Chicago alimente la base de données avec les
     nouveaux crimes commis dans la ville. 
     Parmi les données collectées, on retrouve: 
-    cambriolages, agressions, homicides, vols, braquages, intimidations, kidnapping, 
-    possession d'arme\dots.
+    cambriolages, agressions, homicides, vols, braquages, intimidations, kidnappings, 
+    possessions d'armes\dots.
     Seuls les meurtres ne sont pas comptabilisés dans la base de données.
 
     \section{Aperçu du dataset}
@@ -44,7 +44,7 @@
 	    \centering
 	    \begin{subfigure}{.45\textwidth}
 		    \includegraphics[scale=.2]{images/pprimarytype.png}
-		    \caption{Pourcentage de crimes en fonction de leurs type}
+		    \caption{Pourcentage de crimes en fonction de leurs types}
 		    \label{A}
 	    \end{subfigure}
 	    \begin{subfigure}{.45\textwidth}
@@ -55,7 +55,7 @@
 	    \caption{Aperçu }
     \end{figure}
     La Figure \ref{A} nous montre que les crimes les plus représentés sont les 
-    agressions (\textit{battery}), le trafic de de drogue (\textit{narcotics}) 
+    agressions (\textit{battery}), le trafic de drogue (\textit{narcotics}) 
     et les vols (\textit{threft}).
 
     \begin{wrapfigure}{r}{0.5\textwidth}
@@ -74,7 +74,7 @@
     point représente un crime.
 
     \section{Définition du problème}
-    Notre problème sera le suivant. Il s'agira de déterminer si il y aura
+    Notre problème sera le suivant. Il s'agira de déterminer s'il y aura
     oui ou non une arrestation à la suite d'un crime. 
     Pour être plus précis, étant donné le lieu, la description et la date du crime, 
     il faudra dire si cela va mener à l'arrestation d'un suspect.
@@ -89,7 +89,7 @@
 
     On rappelle que notre dataset contient 7 millions d'entrées, on peut se permettre
     de faire quelques changements.
-    Nous avons tout d'abord supprimé les données qui contenaient des features vides,
+    Tous d'abord, nous avons supprimé les données qui contenaient des features vides,
     et nous avons équilibré le dataset en mettant autant de crimes avec arrestation que de crimes sans arrestation.
     Cela a été fait avec des commandes shell pour la rapidité et la simplicité. 
     Voici les commandes effectuées.
@@ -99,11 +99,11 @@
     grep -v -E '(,0,0,2)|(,,)' Crimes2001.csv  > CrimesClean.csv
     
     ## Equilibrer les données
-    # Ici on sépares à l'aide d'expressions régulières les arrested et les non arrested
+    # Ici, on sépare à l'aide d'expressions régulières les arrested et les non arrested
     grep -E '^(([^,]*,)|("[^"]*",)){8}false' CrimesClean.csv > CrimesCleanNonArrested.csv
     grep -E '^(([^,]*,)|("[^"]*",)){8}true' CrimesClean.csv > CrimesCleanArrested.csv
  
-    # Ici on recombine en n'oubliant pas le header contenant le nom des features
+    # Ici, on recombine en n'oubliant pas le header contenant le nom des features
     head -n 1 CrimesClean.csv > CrimesEq.csv
     n=$(wc -l CrimesCleanArrested.csv | grep -E -o '[0-9]+ ')
     cp CrimesCleanArrested.csv tmp.csv
@@ -117,8 +117,7 @@
 	    \caption{Clusters des crimes de Chicago}
 	    \label{E}
     \end{wrapfigure}
-    Ici le fichier CrimesEq.csv contient 3,4 millions de crimes, on ne va pas travailler avec 
-    autant de données et se limiter 1 million.
+    Ici le fichier CrimesEq.csv contient 3,4 millions de crimes, on va donc se limiter à seulement 1 million. 
     L'étape suivante a été de supprimer les features uniques et celles qui se répétaient:
     \begin{itemize}
 	    \item ID
@@ -167,8 +166,8 @@
 
     Nous avons également essayé d'utiliser un RandomForestClassifier. 
     Le score était substantiellement identique au DecsionTree, mais avec un 
-    temps de calcul deux à trois fois supérieur. On pense que c'est du au
-    fait que avons déjà beaucoup de données sur lesquelles nous entraîner, 
+    temps de calcul deux à trois fois supérieur. On pense que c'est dû au
+    fait que nous avons déjà beaucoup de données sur lesquelles nous entraîner, 
     et que le RandomForest serait plus adapté pour un dataset plus restreint.
 
     \section{Comparaison des modèles}
@@ -181,7 +180,7 @@
     Le crime a-t-il eu lieu sur la place publique ou dans un appartement?
     (on peut voir sur la Figure \ref{D} que \textit{location description} est une feature
     importante à la décision, car la question posée sur cette feature est pertinente).
-    L'arbre de décision que nous avons obtenu est vraiment grand, car beaucoup de
+    L'arbre de décision que nous avons obtenu est vraiment grand car il y a beaucoup de
     features, mais nous avons créé un DecisionTree avec une partie restreinte de
     nos features afin de pouvoir le visualiser:
 
@@ -200,14 +199,12 @@
 
     Le modèle bayésien naïf est un modèle basé sur l'EMV
     (Estimateur du Maximum de Vraisemblance).
-    Le but est simple, maximiser la vraisemblance. 
-    Cependant une hypothèse importante de ce modèle est l'indépendance de chaque donnée,
+    Le but est simple : maximiser la vraisemblance. 
+    Cependant, une hypothèse importante de ce modèle est l'indépendance de chaque donnée,
     ce que l'on ne peut pas garantir dans le cadre de notre projet.
-    Ainsi, on peut prévoir une score moyen pour ce modèle avec nos données.
-
-    Comme nous avons beaucoup de données (1M pour les calculs des scores),
-    le bayésien naïf va avoir du mal, alors que cela ne change pas grand
-    chose pour le DecisionTree.
+    De plus, le grand nombre de données (1M pour les calculs des scores) va réduire l'efficacité du bayésien naïf car les données seront encore moins indépendantes entre elles.
+    Ainsi, on peut prévoir un score moyen pour ce modèle avec nos données.
+    
 
     \section{Présentation des résultats}
 
@@ -236,7 +233,7 @@
     Score DecisionTree :  0.82345
     \end{Verbatim}
 
-    La comparaison des modèles nous a donné raison, l'arbre de décision nous donne
+    La comparaison des modèles nous a donné raison. L'arbre de décision nous donne
     un meilleur score que le bayésien naïf.
 
     Voici quelques exemples concrets de nos prédictions, sur l'ensemble de test.
@@ -252,19 +249,19 @@
     classification. 
     Ce qui nous a particulièrement plu, c'était de travailler sur le dataset
     avant d'entraîner le modèle. En effet, nos données contenaient peu de
-    features et n'étaient pas très bien équilibrée.
+    features et n'étaient pas très bien équilibrées.
     Néanmoins, nous obtenons un score très correct, nous pouvons prédire à
     plus de 80\% si pour un crime donné, il y aura une arrestation ou non.
 
     Pour aller plus loin, il aurait été intéressant d'ajouter des features
     externes au dataset, telles que des données météorologiques, des
-    évènements sociaux ou politique. Cela nous aurait demandé de créer un
+    évènements sociaux ou politiques. Cela nous aurait demandé de créer un
     nouveau dataset, mais il aurait été très intéressant de voir à quel 
     point on peut augmenter notre score de cette manière.
 
     Enfin, notre modèle a quelques limites. Tous les crimes du dataset sont
     relevés par la police de Chicago. Donc certains de ces crimes sont
-    forcements suivis d'une arrestation. C'est par exemple le cas de la
+    forcément suivis d'une arrestation. C'est par exemple le cas de la
     détention de drogue, qui est un crime flagrant.
     De plus, on peut facilement imaginer que l'ensemble des crimes commis
     dans la ville ne sont pas répertoriés. Le dataset est donc biaisé sur ce
