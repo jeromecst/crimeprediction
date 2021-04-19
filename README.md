@@ -1,10 +1,11 @@
 ## Exécution du code
 
 ```
-python3 main.py fichier.csv [reload]
+python3 main.py fichier.csv [noreload]
 ```
 * fichier.csv correspond au dataset au format csv
-* reload est une option facultative pour regénérer le preprocessing (se fait automatiquement si le fichier preprocessé n'est pas trouvé)
+* noreload est une option facultative pour ne pas regénérer le preprocessing (uniquement
+  si le fichier_prepro.csv a été déjà généré)
 
 Télécharger les fichiers ici :
 * https://www.jeromecst.com/Crimes100KEq.csv

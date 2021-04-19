@@ -15,9 +15,9 @@ else:
     file = str(sys.argv[1][:-4])
     print(file)
 if(len(sys.argv) > 2):
-    ignorePreprocessedFile = bool(str(sys.argv)[2])
-else:
     ignorePreprocessedFile = False
+else:
+    ignorePreprocessedFile = True
 
 def bestNumberOfClusters(prepro, train, n = 12):
     if ignorePreprocessedFile == False:
@@ -182,7 +182,7 @@ y_pred_Gauss, Y_test, _ = train.predict_Gauss()
 vizu = vizualisation.vizualisation(prepro)
 vizu.matrice_confusion("MatriceConfusionDecisionTree", y_pred_Decision_Tree, Y_test)
 vizu.matrice_confusion("MatriceConfusionGauss", y_pred_Gauss, Y_test)
-if(ignorePreprocessedFile): vizu.crimeexample(prepro, train, n = 10)
+if(ignorePreprocessedFile): vizu.crimeexample(prepro, train, n = 20)
 
 #vizu.affichage_BAR_Primary_Type()
 
