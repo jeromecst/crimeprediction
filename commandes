@@ -10,8 +10,8 @@ grep -v -E '(,0,0,2)|(,,)' Crimes2001.csv  > CrimesClean.csv
 
 ## Equilibrer les données
 # Ici on sépares à l'aide d'expressions régulières les arrested et les non arrested
-grep -E '^(([^,]*,)|("[^"]*",)){8}false' Crimes100K.csv > CrimesCleanNonArrested.csv
-grep -E '^(([^,]*,)|("[^"]*",)){8}true' Crimes100K.csv > CrimesCleanArrested.csv
+grep -E '^(([^,]*,)|("[^"]*",)){8}false' CrimesClean.csv > CrimesCleanNonArrested.csv
+grep -E '^(([^,]*,)|("[^"]*",)){8}true' CrimesClean.csv > CrimesCleanArrested.csv
 
 # Ici on recombine en n'oubliant pas le header contenant le nom des features
 head -n 1 CrimesClean.csv > CrimesEq.csv
