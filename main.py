@@ -7,6 +7,8 @@ import sys
 import time
 import matplotlib.pyplot as plt
 from os import path
+
+crossvalidation=False # active toutes les fonctions qui font de la cross validation
  
 if(len(sys.argv) < 2):
     print("Specify a file\n Example : python main.py Crimes100KEq.csv")
@@ -108,28 +110,6 @@ def affichage_encodage():
         for j in range(2):
             print("encodage du",prepro.features_description[i],j,prepro.encodage[i][j])
 
-def comparaison_features(train, X, Y):
-    compar_date_lieu_Gauss = np.zeros((5,4))
-    compar_date_lieu_Tree = np.zeros((5,4))
-
-    dates = ['Part of the day', 'Weekday', 'Weekend', 'Month', 'Hour']
-    lieux = ['Ward', 'Community Area', 'District', 'Cluster']
-
-    for i, date_i in enumerate(dates):
-        for j, lieu_i in enumerate(lieux):
-            X_temp, Y_temp = X.copy(), Y.copy()
-            prepro.extract_date(X_temp, date_i)
-            prepro.extract_lieu(X_temp, lieu_i)
-            train.load_data(X_temp,Y_temp)
-            train.traintestsplit(0.3)
-            compar_date_lieu_Gauss[i][j]=train.fit_GaussNB()
-            compar_date_lieu_Tree[i][j]=train.fit_DecisionTree()
-        
-    panda_Gauss = pd.DataFrame(compar_date_lieu_Gauss, columns=lieux, index=dates)
-    print(panda_Gauss)
-    panda_Tree = pd.DataFrame(compar_date_lieu_Tree, columns=lieux, index=dates)
-    print(panda_Tree)
-
 print("\nDébut du preprocessing\n") 
 display = False
 if path.isfile(f"{file}_prepro.csv") and not ignorePreprocessedFile:
@@ -154,10 +134,8 @@ X, Y = prepro.XYsplit(data_encodée)
 train = train.train(X,Y)
 train.traintestsplit(0.3)
 
-crossvalidation=False
 if(crossvalidation):
     bestParamDecisionTree(train, X, Y)
-    comparaison_features(train, X, Y)
     bestNumberOfClusters(prepro, train)
     bestNumberData(train)
 
@@ -172,8 +150,8 @@ print("\nDébut du training_DecisionTree\n")
 train.fit_DecisionTree(display)
 train.DecisionTree_feature_importances(prepro.features_description)
 
-#print("\nDébut du training_RandomForestClassifier\n")
-#train.fit_RandomForestClassifier(100, display=display) 
+print("\nDébut du training_RandomForestClassifier\n")
+train.fit_RandomForestClassifier(100, display=display) 
 
 
 print("\nDébut de la visualisation\n")
@@ -184,8 +162,8 @@ vizu.matrice_confusion("MatriceConfusionDecisionTree", y_pred_Decision_Tree, Y_t
 vizu.matrice_confusion("MatriceConfusionGauss", y_pred_Gauss, Y_test)
 if(ignorePreprocessedFile): vizu.crimeexample(prepro, train, n = 20)
 
-#vizu.affichage_BAR_Primary_Type()
+vizu.affichage_BAR_Primary_Type()
 
-#train.fit_DecisionTree(display=True, max_depth = 3)
-#clf = train.model_DecisionTree()
-#vizu.DecisionTree_plot(clf)
+train.fit_DecisionTree(display=True, max_depth = 3)
+clf = train.model_DecisionTree()
+vizu.DecisionTree_plot(clf)
