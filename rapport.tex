@@ -39,6 +39,28 @@
     possessions d'armes\dots.
     Seuls les meurtres ne sont pas comptabilisés dans la base de données.
 
+    \begin{itemize}
+	    \item Voici le lien brut du dataset :
+		    \href{https://www.kaggle.com/n3v375/chicago-crime-from-01jan2001-to-22jul2020}{dataset brut}
+	    \item Voici le lien du dataset modifié (précisions dans la suite du rapport) :
+		    \begin{itemize}
+			    \item version 100K :
+				    \href{https://jeromecst.com/Crimes100KEq.csv}{jeromecst.com/Crimes100KEq.csv}
+			    \item version 1 million :
+				    \href{https://jeromecst.com/Crimes1MEq.csv}{jeromecst.com/Crimes1MEq.csv}
+		    \end{itemize}
+    \end{itemize}
+
+    Voici comment exécuter le code:
+    \begin{Verbatim}
+    python3 main.py Crimes100KEq.csv
+    \end{Verbatim}
+    ou pour ne pas refaire le preprocessing à chaque fois
+    \begin{Verbatim}
+    python3 main.py Crimes100KEq.csv noreload
+    \end{Verbatim}
+
+
     \section{Aperçu du dataset}
     \begin{figure}[H]
 	    \centering
@@ -117,7 +139,8 @@
 	    \caption{Clusters des crimes de Chicago}
 	    \label{E}
     \end{wrapfigure}
-    Ici le fichier CrimesEq.csv contient 3,4 millions de crimes, on va donc se limiter à seulement 1 million. 
+    Ici le fichier CrimesEq.csv contient 3,4 millions de crimes, on va donc se limiter à
+    seulement 1 million.
     L'étape suivante a été de supprimer les features uniques et celles qui se répétaient:
     \begin{itemize}
 	    \item ID
@@ -199,7 +222,7 @@
 
     Le modèle bayésien naïf est un modèle basé sur l'EMV
     (Estimateur du Maximum de Vraisemblance).
-    Le but est simple : maximiser la vraisemblance. 
+    Le but est simple: maximiser la vraisemblance. 
     Cependant, une hypothèse importante de ce modèle est l'indépendance de chaque donnée,
     ce que l'on ne peut pas garantir dans le cadre de notre projet.
     De plus, le grand nombre de données (1M pour les calculs des scores) va réduire l'efficacité du bayésien naïf car les données seront encore moins indépendantes entre elles.
