@@ -77,7 +77,6 @@ class vizualisation:
         train.fit_DecisionTree(display=False)
         pred, test, proba = train.predict_DecisionTree()
 
-        print(prepro.features_description)
         print()
         for i in ids:
             s = "\033[0;32mbien\033[0m" if pred[i] == test[i] else "\033[0;31mmal\033[0m"
