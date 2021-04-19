@@ -114,7 +114,22 @@
 
     \section{Comparaison des modèles}
 
+    L'arbre de décision est un classifieur qui nous aide à prendre des décision : selon le type de crime, selon le lieu, le moment etc., y-a-t-il eu arrestation ou pas? Pour chaques features, il essaye de répondre à des questions sur celles-ci afin de les séparer en différentes catégorie : Le crime a-t-il eu lieu avant 2010 ou après 2010? (on peut voir sur la figure ? que année est une feature importante à la décision, car la question posée sur cette feature est pertinente).
+    L'arbre de décision que nous avons obtenue est vraiment grand, car beaucoup de features, "mais nous avons crée un decision tree avec une partie restreinte de nos features afin de pouvoir le regarder : ??"
+
+    Le modèle baïssien naif est un modèle basé sur l'EMV (Estimateur du Maximum de Vraisemblance). Le but est simple, maximiser la vraisemblance. Cependant une hypothèse imporante de ce modèle est l'indépendance de chaque données, ce qui n'est pas du tout notre cas dans ce projet. Ainsi, on peut prévoire une score moyen pour ce modèle avec nos données.
+    
+    Comme nous avons beaucoup de données (1M pour les calculs des scores), le baïssien naif va avoir du mal, alors que cela ne pas changer grande chose pour le decision tree.
+
     \section{Présentation des résultats}
+
+    Voici la matrice de confusion générée à partir de l'arbre décision, entrainé sur nos 1 millions de données. On peut voir que notre modèle arrive mieux à valider le fait qu'il y ai arrestation que le fait qu'il n'y ai pas d'arrestation.
+
+    Les scores obtenues pour nos deux modèles sont :
+
+    Images
+
+    La comparaison des modèles nous a donné raison, l'arbre de décision nous donne un meilleur score que le baïssien naif. 
 
     \section{Conclusion}
 
